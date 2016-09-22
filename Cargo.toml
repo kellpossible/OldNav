@@ -1,0 +1,6 @@
+[package]
+name = "oldnav"
+version = "0.1.0"
+authors = ["Luke Frisken <l.frisken@gmail.com>"]
+
+[dependencies]
