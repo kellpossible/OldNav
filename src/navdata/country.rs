@@ -18,7 +18,8 @@ impl Country {
 }
 
 
-
+/// Read countries in from a txt file: see icao_countries.txt for an example file format
+/// Basically it just maps ICAO codes to the country names
 pub fn read_countries(file_path: &str) -> Result<HashMap<String, Country>> {
 	let mut cm = HashMap::new();
 

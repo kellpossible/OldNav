@@ -17,7 +17,6 @@ My *Package Control.sublime-settings* (with comments, don't try to use this file
     [
         "BeautifyRust", - reformat rust code
         "BracketHighlighter", - highlight selected bracket pair
-        "DocBlockr", - for editing documentation comments
         "Filter Lines", - for searching large files
         "GitGutter", - show changed lines
         "Google Spell Check", - spell checking
@@ -37,9 +36,9 @@ My *Package Control.sublime-settings* (with comments, don't try to use this file
         "Schemr", - allow switching color schemes
         "SideBarEnhancements", - more options in the sidebar
         "SublimeGDB", - debugging using gdb
-        "SublimeGit", - fantastic git gui
+        "GitSavvy", - fantastic git gui
         "Table Editor", - fantastic table editor for md and rst files
-        "Terminal", - open a terminal
+        "Terminal", - open a terminal (I had to rebind some keys for this)
         "Theme - Soda", - sublime theme
         "Themr", - allow switching themes
         "TOML" - for editing rust package settings
