@@ -1,6 +1,9 @@
+//! A module with methods for `Country` and other associated functions and interfaces.
+
 use std::collections::HashMap;
 use std::io::{Error, Result, BufReader, BufRead};
 use std::fs::File;
+use std::fmt;
 
 /// Represents a country on earth that is recognised in the icao codes.
 pub struct Country {
@@ -26,6 +29,13 @@ impl Country {
             code: code.into(),
             name: name.into(),
         };
+    }
+}
+
+impl fmt::Debug for Country {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        return write!(f, "Country: {{code: {}, name: {}}}", self.code, self.name);
+
     }
 }
 

@@ -9,6 +9,7 @@ use std::collections::HashMap;
 use std::env::current_exe;
 
 fn main() {
+    
     let mut exe_dir = current_exe().unwrap();
     exe_dir.pop();
 

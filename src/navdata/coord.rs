@@ -1,3 +1,7 @@
+//! Spherical and Geographic coordinates.
+//!
+//! TODO: more explaination here
+
 use nalgebra::Vector3;
 use std::f64::consts::PI;
 use std::f64::*;
@@ -6,16 +10,36 @@ use std::fmt;
 static TWO_PI: f64 = PI * 2.0;
 static HALF_PI: f64 = PI / 2.0;
 
+/// Mean sea level on earth
 pub static EARTH_MSL_RADIUS: f64 = 6371000.0;
 
+/// Represents a coordinate in the spherical coordinate system.
+///
+/// The normal range for the variables is as follows:
+///
+/// |name  |   range       |
+/// |------|---------------|
+/// | r    | 0 -> infinity |
+/// |theta |  (0 -> 2PI)   |
+/// |phi   |  (-PI -> PI)  |
+///
+/// See: http://mathworld.wolfram.com/SphericalCoordinates.html for more details.
+///
+#[derive(Copy, Clone)]
 pub struct SphericalCoordinate {
-    r: f64,
-    theta: f64,
-    phi: f64,
+    /// Radius component
+    pub r: f64,
+
+    /// Theta component
+    pub theta: f64,
+
+    /// Phi component
+    pub phi: f64,
 }
 
 
 impl SphericalCoordinate {
+    /// Constructor for `SphericalCoordinate`
     pub fn new(r: f64, theta: f64, phi: f64) -> SphericalCoordinate {
         return SphericalCoordinate {
             r: r,
@@ -24,14 +48,23 @@ impl SphericalCoordinate {
         };
     }
 
-    /// Create a new SphericalCoordinate from geographic coordinate
+    /// Create a new SphericalCoordinate from geographic coordinate.
+    ///
+    /// **alt**: metres above the surface as defined by `EARTH_MSL_RADIUS`
+    ///
+    /// **lat**: latitude in degrees
+    ///
+    /// **lon**: longitude in degrees
     pub fn from_geographic(alt: f64, lat: f64, lon: f64) -> SphericalCoordinate {
         return SphericalCoordinate::new(alt + EARTH_MSL_RADIUS,
                                         f64::to_radians(lon) + PI,
                                         f64::to_radians(lat) + HALF_PI);
     }
 
-    /// Create a new SphericalCoordinate from cartesian coordinate
+    /// Create a new SphericalCoordinate from cartesian coordinate.
+    ///
+    /// Scale of vector v needs to be in meters, with reference position being the centre of
+    /// the sphere.
     pub fn from_cartesian(v: Vector3<f64>) -> SphericalCoordinate {
         let r = f64::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
         let mut theta = NAN;
@@ -99,28 +132,27 @@ impl SphericalCoordinate {
         return self.r - EARTH_MSL_RADIUS;
     }
 
-    /// set the altitude above MSL
+    /// set the altitude above MSL (in metres)
     pub fn set_alt(&mut self, alt: f64) {
         self.r = alt + EARTH_MSL_RADIUS;
     }
 
-    /// get the latitude
+    /// get the latitude (in degrees)
     pub fn lat(&self) -> f64 {
         return (self.phi - HALF_PI).to_degrees();
     }
 
-    /// set the latitude
+    /// set the latitude (in degrees)
     pub fn set_lat(&mut self, lat: f64) {
         self.phi = lat.to_radians() + HALF_PI;
     }
 
-    /// get the longitude
+    /// get the longitude (in degrees)
     pub fn lon(&self) -> f64 {
         return (self.theta - PI).to_degrees();
     }
 
-
-    /// set the longitude
+    /// set the longitude (in degrees)
     pub fn set_lon(&mut self, lon: f64) {
         self.theta = lon.to_radians() + PI;
     }
@@ -170,6 +202,8 @@ impl SphericalCoordinate {
                         other.theta.sin() * f64::cos(self.phi - other.phi));
     }
 
+    /// Format the `SphericalCoordinate` as a Geographical point string (altitude,
+    /// latitude and longitude).
     pub fn fmt_geographic(&self) -> String {
         format!("Point {{alt: {}, lat: {}, lon: {}}}",
                 self.alt(),

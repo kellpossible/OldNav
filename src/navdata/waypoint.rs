@@ -1,3 +1,5 @@
+//! A module with methods for `Waypoint` and other associated functions and interfaces.
+
 use navdata::coord::SphericalCoordinate;
 use std::collections::HashMap;
 use navdata::country::Country;
@@ -5,20 +7,35 @@ use std::io::{Error, Result, BufReader, BufRead};
 use std::fs::File;
 use std::fmt;
 
+/// An ICAO waypoint.
 pub struct Waypoint<'a> {
+    /// ICAO airport code
     pub code: String,
+
+    /// Name of airport
     pub name: String,
+
+    /// Position of airport
     pub pos: SphericalCoordinate,
+
+    /// `Country` containing this `Waypoint`
     pub country: Option<&'a Country>,
 }
 
+/// A common interface for accessing objects which can provide waypoint information.
 pub trait WaypointInterface {
+    /// Get the ICAO code for this waypoint.
     fn code(&self) -> &str;
+
+    /// Get the name of this waypoint.
     fn name(&self) -> &str;
+
+    /// Get the position of this waypoint.
     fn pos(&self) -> &SphericalCoordinate;
 }
 
 impl<'a> Waypoint<'a> {
+    /// Constructor for `Waypoint`.
     pub fn new<S: Into<String>>(code: S,
                                 name: S,
                                 pos: SphericalCoordinate,
@@ -64,7 +81,8 @@ impl<'a> fmt::Debug for Waypoint<'a> {
     }
 }
 
-/// Read Waypoints.txt file from x-plane's gns430 nav data
+/// Read Waypoints.txt file from x-plane's gns430 nav data.
+///
 /// cm is a HashMap which maps countries to their icao identifier, and is used
 /// during the reading of the waypoints.
 pub fn read_waypoints<'a>(file_path: &str,
