@@ -27,10 +27,9 @@ fn main() {
 
     let waypoints_path = resources_dir.join("Waypoints.txt");
     let waypoints_path = waypoints_path.to_str().unwrap();
-    let waypoints = waypoint::read_waypoints(waypoints_path, &cm);
-
-    for waypoint in waypoints {
-        // println!("{:?}", waypoint);
+    let waypoints = waypoint::read_waypoints(waypoints_path, &cm).unwrap();
+    for waypoint in &waypoints {
+        println!("{:?}", waypoint);
     }
 
 

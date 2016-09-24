@@ -9,7 +9,7 @@ pub struct Waypoint<'a> {
     pub code: String,
     pub name: String,
     pub pos: SphericalCoordinate,
-    pub country: Option<&'a Country>
+    pub country: Option<&'a Country>,
 }
 
 pub trait WaypointInterface {
@@ -19,12 +19,16 @@ pub trait WaypointInterface {
 }
 
 impl<'a> Waypoint<'a> {
-    pub fn new<S: Into<String>>(code: S, name: S, pos: SphericalCoordinate, country: Option<&'a Country>) -> Waypoint<'a> {
+    pub fn new<S: Into<String>>(code: S,
+                                name: S,
+                                pos: SphericalCoordinate,
+                                country: Option<&'a Country>)
+                                -> Waypoint<'a> {
         return Waypoint {
             code: code.into(),
             name: name.into(),
             pos: pos,
-            country: country
+            country: country,
         };
     }
 }
@@ -43,17 +47,38 @@ impl<'a> WaypointInterface for Waypoint<'a> {
     }
 }
 
+impl<'a> fmt::Debug for Waypoint<'a> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let country_str = match self.country {
+            None => "None",
+            Some(c) => &*c.name,
+        };
+        return write!(f,
+                      "Waypoint {{code: {}, name: {}, pos: [{},{}], country: {}}}",
+                      self.code,
+                      self.name,
+                      self.pos.lat(),
+                      self.pos.lon(),
+                      country_str);
+
+    }
+}
+
 /// Read Waypoints.txt file from x-plane's gns430 nav data
 /// cm is a HashMap which maps countries to their icao identifier, and is used
 /// during the reading of the waypoints.
-pub fn read_waypoints<'a>(file_path: &str, cm: &'a HashMap<String, Country>) -> Result<Vec<Waypoint<'a>>> {
+pub fn read_waypoints<'a>(file_path: &str,
+                          cm: &'a HashMap<String, Country>)
+                          -> Result<Vec<Waypoint<'a>>> {
     let mut waypoints = Vec::new();
 
 
     let f: File = match File::open(file_path) {
         Ok(v) => v,
-        Err(e) => return Err(Error::new(e.kind(), 
-            format!("Unable to open waypoints file: {}", file_path)))
+        Err(e) => {
+            return Err(Error::new(e.kind(),
+                                  format!("Unable to open waypoints file: {}", file_path)))
+        }
     };
 
     let bf = BufReader::new(&f);
@@ -71,35 +96,8 @@ pub fn read_waypoints<'a>(file_path: &str, cm: &'a HashMap<String, Country>) -> 
 
         // println!("{:?}", split);
 
-        waypoints.push(Waypoint::new(
-            waypoint_code.clone(), waypoint_code,
-            pos, country))
+        waypoints.push(Waypoint::new(waypoint_code.clone(), waypoint_code, pos, country))
     }
 
     return Ok(waypoints);
-}
-
-impl<'a> fmt::Debug for Waypoint<'a> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        if self.country.is_none() {
-           return write!(f,
-               "Waypoint {{code: {}, name: {}, pos: [{},{}], country:}}",
-               self.code,
-               self.name,
-               self.pos.lat(),
-               self.pos.lon()
-               );
-        }
-
-        println!("{:?}", self.country.is_none());
-
-        // let c = self.country.unwrap();
-        return write!(f,
-           "Waypoint {{code: {}, name: {}, pos: [{},{}], country: }}",
-           self.code,
-           self.name,
-           self.pos.lat(),
-           self.pos.lon());
-        
-    }
 }

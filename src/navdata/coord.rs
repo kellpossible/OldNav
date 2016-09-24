@@ -171,10 +171,10 @@ impl SphericalCoordinate {
     }
 
     pub fn fmt_geographic(&self) -> String {
-    	format!("Point {{alt: {}, lat: {}, lon: {}}}",
-				self.alt(),
-				self.lat(),
-				self.lon())
+        format!("Point {{alt: {}, lat: {}, lon: {}}}",
+                self.alt(),
+                self.lat(),
+                self.lon())
     }
 }
 

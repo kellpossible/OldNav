@@ -8,7 +8,11 @@ pub struct Airport<'a> {
 }
 
 impl<'a> Airport<'a> {
-    pub fn new<S: Into<String>>(code: S, name: S, pos: SphericalCoordinate, country: Option<&'a Country>) -> Airport<'a> {
+    pub fn new<S: Into<String>>(code: S,
+                                name: S,
+                                pos: SphericalCoordinate,
+                                country: Option<&'a Country>)
+                                -> Airport<'a> {
         return Airport { waypoint: Waypoint::new(code, name, pos, country) };
     }
 }
