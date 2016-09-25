@@ -7,7 +7,18 @@ use std::io::{Error, Result, BufReader, BufRead};
 use std::fs::File;
 use std::fmt;
 
-/// An ICAO waypoint.
+/// An ICAO waypoint
+///
+/// # Examples
+///
+/// ```
+/// # use oldnav_lib::navdata::waypoint::{Waypoint, read_waypoints};
+/// # use oldnav_lib::navdata::country;
+/// # use oldnav_lib::navdata::coord::SphericalCoordinate;
+/// let country = country::Country::new("AG", "Solomon Islands");
+/// let pos = SphericalCoordinate::from_geographic(0.0, -9.66483, 161.02166);
+/// let waypoint = Waypoint::new("ERVOS", "ERVOS", pos, Some(&country));
+/// ```
 pub struct Waypoint<'a> {
     /// ICAO airport code
     pub code: String,
@@ -83,8 +94,28 @@ impl<'a> fmt::Debug for Waypoint<'a> {
 
 /// Read Waypoints.txt file from x-plane's gns430 nav data.
 ///
-/// cm is a HashMap which maps countries to their icao identifier, and is used
+/// cm is a `HashMap` which maps countries to their icao identifier, and is used
 /// during the reading of the waypoints.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// # use oldnav_lib::navdata::waypoint::{Waypoint, read_waypoints};
+/// # use oldnav_lib::navdata::country;
+/// # use std::collections::HashMap;
+///
+/// let countries_map = country::read_countries("some/path/to/icao_countries.txt").unwrap();
+/// let mut waypoints = read_waypoints("some/path/to/Waypoints.txt", &countries_map).unwrap();
+///
+/// for waypoint in &waypoints {
+///     println!("{}", waypoint.code);
+/// }
+///
+/// let waypoint = &mut waypoints[0];
+/// waypoint.pos.set_lat(30.0);
+///
+/// ```
+///
 pub fn read_waypoints<'a>(file_path: &str,
                           cm: &'a HashMap<String, Country>)
                           -> Result<Vec<Waypoint<'a>>> {
@@ -111,8 +142,6 @@ pub fn read_waypoints<'a>(file_path: &str,
 
 
         let country: Option<&'a Country> = cm.get(split[3]);
-
-        // println!("{:?}", split);
 
         waypoints.push(Waypoint::new(waypoint_code.clone(), waypoint_code, pos, country))
     }

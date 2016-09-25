@@ -76,7 +76,7 @@ My default rust project file looks like this (with comments, don't try to use th
              "oldnav":
              {
                  "workingdir": "${folder:${project_path:target/debug/oldnav}}",
-                 "commandline": "gdb --interpreter=mi ./oldnav",
+                 "commandline": "rust-gdb --interpreter=mi ./oldnav",
                  "run_after_init": false,
              },
          }

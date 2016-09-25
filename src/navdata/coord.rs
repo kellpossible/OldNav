@@ -25,6 +25,59 @@ pub static EARTH_MSL_RADIUS: f64 = 6371000.0;
 ///
 /// See: http://mathworld.wolfram.com/SphericalCoordinates.html for more details.
 ///
+/// The design decision to combine Spherical with Geographical coordinates was made
+/// beceause many of the algorithms available, and literature deal with the spherical
+/// coordinate system, so it is easier to implement it with that. It is fairly low cost
+/// to go between the two representations, and this only really occurs twice, once in, and
+/// once out to display. Most of the heavy calculations will be while the coordinate is
+/// treated as a spherical coordinate.
+///
+///
+/// # Examples
+///
+/// It is very common to instantiate from a geographical point and then access those values later
+/// in the form of latitude and longitude:
+///
+/// ```
+/// # use oldnav_lib::navdata::coord::SphericalCoordinate;
+/// # let accuracy = 0.0001;
+///
+/// let pos = SphericalCoordinate::from_geographic(324.567, 82.123, 23.452);
+/// println!("{},{}", pos.lat(), pos.lon());
+///
+/// # assert!((pos.alt()-324.567).abs() < accuracy);
+/// # assert!((pos.lat()-82.123).abs() < accuracy);
+/// # assert!((pos.lon()-23.452).abs() < accuracy);
+/// ```
+///
+/// If you are manually setting the r, theta or phi values you need to ensure that your values
+/// fall within the range specified, or that you use the `rectify_bounds()` method to
+/// transform the coordinate into the specified range after you set the value
+///
+/// ```
+/// # use oldnav_lib::navdata::coord::SphericalCoordinate;
+/// # use std::f64::consts::PI;
+/// let accuracy = 0.0001;
+///
+/// let mut pos = SphericalCoordinate::new(30.0, 0.0, PI);
+/// println!("{:?}", pos);
+///
+/// # assert!((pos.r-30.0).abs() < accuracy);
+/// # assert!((pos.theta-0.0).abs() < accuracy);
+/// # assert!((pos.phi-PI).abs() < accuracy);
+///
+/// // negative theta puts coordinate outside bounds of (0 -> 2PI)
+/// pos.theta = -1.0 * PI;
+/// pos.rectify_bounds_inplace();
+/// println!("{:?}", pos);
+///
+/// // test to see that coordinate is now properly within the bounds
+/// # assert!((pos.r-30.0).abs() < accuracy);
+/// assert!((pos.theta-PI).abs() < accuracy);
+/// assert!((pos.phi-PI).abs() < accuracy);
+///
+/// ```
+///
 #[derive(Copy, Clone)]
 pub struct SphericalCoordinate {
     /// Radius component
@@ -40,12 +93,48 @@ pub struct SphericalCoordinate {
 
 impl SphericalCoordinate {
     /// Constructor for `SphericalCoordinate`
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use oldnav_lib::navdata::coord::SphericalCoordinate;
+    /// # use std::f64::consts::PI;
+    /// # let accuracy = 0.0001;
+    ///
+    /// let pos = SphericalCoordinate::new(10.0, PI, 0.0);
+    /// println!("theta: {:?}", pos.theta);
+    ///
+    /// # assert!((pos.r-10.0).abs() < accuracy);
+    /// # assert!((pos.theta-PI).abs() < accuracy);
+    /// # assert!((pos.phi-0.0).abs() < accuracy);
+    /// ```
+    ///
+    /// When the values exceed the normal bountaries for the spherical coordinate system, they
+    /// are wrapped back around to the equivalent angle (rectified) to ensure they stay within
+    /// the expected values for other calculations:
+    ///
+    /// ```
+    /// # use oldnav_lib::navdata::coord::SphericalCoordinate;
+    /// # use std::f64::consts::PI;
+    ///
+    /// let accuracy = 0.0001;
+    /// let pos = SphericalCoordinate::new(10.0, 3.0*PI, 0.0);
+    ///
+    /// // test to see if values are assigned accurately
+    /// assert!((pos.r-10.0).abs() < accuracy);
+    /// // theta has been rectified to be within boundary (0 -> 2PI)
+    /// assert!((pos.theta-PI).abs() < accuracy);
+    /// assert!((pos.phi-0.0).abs() < accuracy);
+    /// ```
+    ///
     pub fn new(r: f64, theta: f64, phi: f64) -> SphericalCoordinate {
-        return SphericalCoordinate {
+        let mut coord = SphericalCoordinate {
             r: r,
             theta: theta,
             phi: phi,
         };
+        coord.rectify_bounds_inplace();
+        return coord;
     }
 
     /// Create a new SphericalCoordinate from geographic coordinate.
@@ -55,6 +144,10 @@ impl SphericalCoordinate {
     /// **lat**: latitude in degrees
     ///
     /// **lon**: longitude in degrees
+    ///
+    /// # Examples
+    ///
+    ///
     pub fn from_geographic(alt: f64, lat: f64, lon: f64) -> SphericalCoordinate {
         return SphericalCoordinate::new(alt + EARTH_MSL_RADIUS,
                                         f64::to_radians(lon) + PI,
@@ -90,41 +183,61 @@ impl SphericalCoordinate {
 
         let phi = f64::acos(v.z / r);
 
-        return SphericalCoordinate::new(r, theta, phi).rectify_bounds();
+        return SphericalCoordinate::new(r, theta, phi);
     }
 
-    fn rectify_bounds(&self) -> SphericalCoordinate {
-        let mut r = self.r;
-        let mut theta = self.theta;
-        let mut phi = self.phi;
-        while phi < 0.0 {
-            phi += TWO_PI;
+    /// Create a clone with values that fall within the normal
+    /// boundary of Spherical coordinate system.
+    pub fn rectify_bounds(&self) -> SphericalCoordinate {
+        let mut new_coord = self.clone();
+        new_coord.rectify_bounds_inplace();
+        return new_coord;
+    }
+
+    /// Ensure that this object's values fall within the normal
+    /// boundary of Spherical coordinate system.
+    pub fn rectify_bounds_inplace(&mut self) {
+        while self.phi < 0.0 {
+            self.phi += TWO_PI;
         }
 
-        while phi > TWO_PI {
-            phi -= TWO_PI;
+        while self.phi > TWO_PI {
+            self.phi -= TWO_PI;
         }
 
-        if phi > PI {
-            phi = TWO_PI - phi;
-            theta += PI;
+        if self.phi > PI {
+            self.phi = TWO_PI - self.phi;
+            self.theta += PI;
         }
 
-        if theta < 0.0 {
-            r = -r;
-            theta += PI;
-            phi = PI - phi;
+        while self.theta > TWO_PI {
+            self.theta -= TWO_PI;
         }
 
-        while theta > TWO_PI {
-            theta -= TWO_PI;
+        while self.theta < 0.0 {
+            self.theta += TWO_PI;
         }
+    }
 
-        while theta < 0.0 {
-            theta += TWO_PI;
-        }
-
-        return SphericalCoordinate::new(r, theta, phi);
+    /// Check whether this `SphericalCoordinate` and another are approximately equal
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use oldnav_lib::navdata::coord::SphericalCoordinate;
+    /// # use std::f64::consts::PI;
+    ///
+    /// let pos1 = SphericalCoordinate::new(10.0, PI, 0.0);
+    /// let pos2 = SphericalCoordinate::new(10.0, PI, 0.1);
+    /// assert!(pos1.approx_eq(&pos2, 0.2));
+    ///
+    /// ```
+    pub fn approx_eq(&self, other: &SphericalCoordinate, epsilon: f64) -> bool {
+        let mut eq = true;
+        eq &= (self.r - other.r).abs() < epsilon;
+        eq &= (self.theta - other.theta).abs() < epsilon;
+        eq &= (self.phi - other.phi).abs() < epsilon;
+        return eq;
     }
 
     /// get the altitude
@@ -145,6 +258,7 @@ impl SphericalCoordinate {
     /// set the latitude (in degrees)
     pub fn set_lat(&mut self, lat: f64) {
         self.phi = lat.to_radians() + HALF_PI;
+        self.rectify_bounds_inplace();
     }
 
     /// get the longitude (in degrees)
@@ -155,42 +269,32 @@ impl SphericalCoordinate {
     /// set the longitude (in degrees)
     pub fn set_lon(&mut self, lon: f64) {
         self.theta = lon.to_radians() + PI;
+        self.rectify_bounds_inplace();
     }
 
     /// get the r cartesian unit vector
     pub fn r_cart_uv(&self) -> Vector3<f64> {
-        let rectified = self.rectify_bounds();
-        let theta = rectified.theta;
-        let phi = rectified.phi;
-
         return Vector3 {
-            x: theta.cos() * phi.sin(),
-            y: theta.sin() * phi.sin(),
-            z: phi.cos(),
+            x: self.theta.cos() * self.phi.sin(),
+            y: self.theta.sin() * self.phi.sin(),
+            z: self.phi.cos(),
         };
     }
 
     /// get the phi cartesian unit vector
     pub fn phi_cart_uv(&self) -> Vector3<f64> {
-        let rectified = self.rectify_bounds();
-        let theta = rectified.theta;
-        let phi = rectified.phi;
-
         return Vector3 {
-            x: phi.cos() * theta.cos(),
-            y: phi.cos() * theta.sin(),
-            z: -phi.sin(),
+            x: self.phi.cos() * self.theta.cos(),
+            y: self.phi.cos() * self.theta.sin(),
+            z: -self.phi.sin(),
         };
     }
 
     /// get the theta cartesian unit vector
     pub fn theta_cart_uv(&self) -> Vector3<f64> {
-        let rectified = self.rectify_bounds();
-        let theta = rectified.theta;
-
         return Vector3 {
-            x: -theta.sin(),
-            y: theta.cos(),
+            x: -self.theta.sin(),
+            y: self.theta.cos(),
             z: 0.0,
         };
     }

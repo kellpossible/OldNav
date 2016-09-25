@@ -29,16 +29,11 @@ fn main() {
     let waypoints_path = resources_dir.join("Waypoints.txt");
     let waypoints_path = waypoints_path.to_str().unwrap();
     let waypoints = waypoint::read_waypoints(waypoints_path, &cm).unwrap();
-    for waypoint in &waypoints {
-        println!("{:?}", waypoint);
-    }
 
 
-    println!("{}", airport.name());
-    println!("{}", airport.code());
-    println!("{:?}", airport.pos());
+    let pos = SphericalCoordinate::new(10.0, 3.0*std::f64::consts::PI, 0.0);
+    println!("{:?}", pos);
+
 
     airport.waypoint.pos = SphericalCoordinate::from_geographic(10.0, 38.0, 150.0);
-
-    println!("{}", airport.pos().fmt_geographic());
 }
