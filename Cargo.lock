@@ -4,6 +4,7 @@ version = "0.1.0"
 dependencies = [
  "astro 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "geojson 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "nalgebra 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "nanovg 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sun 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
