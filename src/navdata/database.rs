@@ -18,6 +18,9 @@ use chrono::format::ParseResult;
 pub struct Database {
     /// Where all the fixes are stored in the database
     pub fixes: Vec<Rc<Waypoint>>,
+    // note: if I want to make waypoint mutable, or country mutable,
+    // I may need to put them in a Rc<RefCell<Waypoint>>.
+
     // pub airports: Vec<Airport<'a>>,
     // pub waypoints: MultiHash<String, &'a WaypointInterface>,
 
@@ -27,48 +30,6 @@ pub struct Database {
     /// Information about the current AIRAC cycle loaded into this navigation
     /// database.
     pub cycle_info: CycleInfo
-}
-
-/// AIRAC Cycle Info
-///
-/// # Examples
-/// ```rust,no_run
-/// # use std::path::PathBuf;
-/// # use oldnav_lib::navdata::database::{CycleInfo, Database};
-/// let db = Database::new(PathBuf::new(), PathBuf::new());
-/// let cycle_info = &db.cycle_info;
-///
-/// println!("airac cycle number: {}", cycle_info.airac_cycle);
-/// ```
-#[derive(Debug)]
-pub struct CycleInfo {
-    /// The cycle number
-    pub airac_cycle: i32,
-    /// Version of the cycle format?
-    pub version: i32,
-    /// The date this cycle comes into effect (and becomes valid)
-    pub valid_from: DateTime<UTC>,
-    /// The date after which this cycle expires and becomes invalid
-    pub valid_to: DateTime<UTC>,
-    /// Message embedded with the cycle data
-    pub message: String
-}
-
-impl CycleInfo {
-    /// Constructor for `CycleInfo`
-    pub fn new(airac_cycle: i32,
-    version: i32,
-    valid_from: DateTime<UTC>,
-    valid_to: DateTime<UTC>,
-    message: String) -> CycleInfo {
-        CycleInfo {
-            airac_cycle: airac_cycle,
-    version: version,
-    valid_from: valid_from,
-    valid_to: valid_to,
-    message: message
-        }
-    }
 }
 
 impl Database {
@@ -147,6 +108,62 @@ impl Database {
     }
 }
 
+
+impl fmt::Debug for Database {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        return write!(f,
+                      "Database: {{n_fixes: {}, n_airports: {}, n_countries: {}}}",
+                      self.fixes.len(),
+                      0,
+                      self.countries.len()
+                      );
+
+    }
+}
+
+/// AIRAC Cycle Info
+///
+/// # Examples
+/// ```rust,no_run
+/// # use std::path::PathBuf;
+/// # use oldnav_lib::navdata::database::{CycleInfo, Database};
+/// let db = Database::new(PathBuf::new(), PathBuf::new());
+/// let cycle_info = &db.cycle_info;
+///
+/// println!("airac cycle number: {}", cycle_info.airac_cycle);
+/// ```
+#[derive(Debug)]
+pub struct CycleInfo {
+    /// The cycle number
+    pub airac_cycle: i32,
+    /// Version of the cycle format?
+    pub version: i32,
+    /// The date this cycle comes into effect (and becomes valid)
+    pub valid_from: DateTime<UTC>,
+    /// The date after which this cycle expires and becomes invalid
+    pub valid_to: DateTime<UTC>,
+    /// Message embedded with the cycle data
+    pub message: String
+}
+
+impl CycleInfo {
+    /// Constructor for `CycleInfo`
+    pub fn new(airac_cycle: i32,
+    version: i32,
+    valid_from: DateTime<UTC>,
+    valid_to: DateTime<UTC>,
+    message: String) -> CycleInfo {
+        CycleInfo {
+            airac_cycle: airac_cycle,
+    version: version,
+    valid_from: valid_from,
+    valid_to: valid_to,
+    message: message
+        }
+    }
+}
+
+
 /// Read cycle info from GNS430 nav database
 fn read_cycle_info(file_path: &str) -> CycleInfo {
     let f = File::open(file_path).expect(&format!("Cannot open file {}", file_path));
@@ -202,17 +219,4 @@ fn parse_date_str(date_str: &str) -> ParseResult<DateTime<UTC>> {
     let mut datetime_str = String::from(date_str.clone());
     datetime_str.push_str(" 00:00:00");
     return UTC.datetime_from_str(&datetime_str, "%d/%b/%Y %H:%M:%S");
-}
-
-
-impl fmt::Debug for Database {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        return write!(f,
-                      "Database: {{n_fixes: {}, n_airports: {}, n_countries: {}}}",
-                      self.fixes.len(),
-                      0,
-                      self.countries.len()
-                      );
-
-    }
 }

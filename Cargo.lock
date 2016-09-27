@@ -6,6 +6,7 @@ dependencies = [
  "chrono 0.2.25 (registry+https://github.com/rust-lang/crates.io-index)",
  "geojson 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
+ "linked-list 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "nalgebra 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "nanovg 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sun 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -58,6 +59,11 @@ dependencies = [
 [[package]]
 name = "libc"
 version = "0.2.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "linked-list"
+version = "0.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -217,6 +223,7 @@ dependencies = [
 "checksum geojson 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "031559e1156c90cc95853a30aeb1334c89f4e89031671382a1326e91b298c459"
 "checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)" = "408014cace30ee0f767b1c4517980646a573ec61a57957aeeabcac8ac0a02e8d"
+"checksum linked-list 0.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "a4dacf969043dc69f1f731b5042eb05e030d264bcf34f2242889fcbdc7a65f06"
 "checksum nalgebra 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)" = "f754f64bd1a5f5899285c2e182df7ddebcecf466369663be2277ca01b6da5d5d"
 "checksum nanovg 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "cba84ac18c75b828d3e734f1726de3a6968439ce35566270ce0d184bcbd68421"
 "checksum num 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)" = "5a9699207fab8b02bd0e56f8f06fee3f26d640303130de548898b4c9704f6d01"
