@@ -21,6 +21,9 @@ astro = "2.0.0"
 sun = "0.2"
 geojson = "0.4.0"
 libc = "0.2.16"
+xplm = "0.1.9"
+xplm-sys = "0.1.5"
+xplane_plugin = "0.1.1"
 
 [profile.dev]
 

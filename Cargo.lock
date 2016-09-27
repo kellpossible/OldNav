@@ -8,6 +8,9 @@ dependencies = [
  "nalgebra 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "nanovg 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "sun 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "xplane_plugin 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "xplm 0.1.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "xplm-sys 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -142,6 +145,31 @@ name = "sun"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
+[[package]]
+name = "xplane_plugin"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "xplm"
+version = "0.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
+ "xplm-sys 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "xplm-sys"
+version = "0.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
 [metadata]
 "checksum astro 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "199632e1a87451cf771da7adeba192cab923ede42657ac3de0133ba6f4ae14be"
 "checksum bitflags 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "a41f80ec2e140d19e789764fdf22d0f2da98fe7e55d26f99db59cb3d2605d327"
@@ -160,3 +188,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)" = "2791d88c6defac799c3f20d74f094ca33b9332612d9aef9078519c82e4fe04a5"
 "checksum rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)" = "6159e4e6e559c81bd706afe9c8fd68f547d3e851ce12e76b1de7914bab61691b"
 "checksum sun 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "dfc29238f46800dc0e29dbc0b3cab5e745dd40560220f759e30d298740781b59"
+"checksum xplane_plugin 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "4219620b77b0bac9a6e9adf5a4c8bd8f309f24b5df7ce2c577c64827eacae2d7"
+"checksum xplm 0.1.9 (registry+https://github.com/rust-lang/crates.io-index)" = "75ce2213759c28725424ffd8ab6b4441802598d6c963821188c417599e898abe"
+"checksum xplm-sys 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "8974785710819c3baa80cddad190b7cce0a0c0a7122dfc779e5ed8697b4f1d2d"

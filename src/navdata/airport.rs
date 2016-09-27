@@ -5,26 +5,27 @@ use navdata::waypoint::WaypointInterface;
 use navdata::coord::SphericalCoordinate;
 use navdata::country::Country;
 use std::fmt;
+use std::rc::Rc;
 
 /// An airport on earth.
-pub struct Airport<'a> {
+pub struct Airport {
     /// This airport's waypoint.
-    pub waypoint: Waypoint<'a>,
+    pub waypoint: Waypoint,
 }
 
-impl<'a> Airport<'a> {
+impl Airport {
     /// Constructor for `Airport`.
     pub fn new<S: Into<String>>(code: S,
                                 name: S,
                                 pos: SphericalCoordinate,
-                                country: Option<&'a Country>)
-                                -> Airport<'a> {
+                                country: Option<Rc<Country>>)
+                                -> Airport {
         return Airport { waypoint: Waypoint::new(code, name, pos, country) };
     }
 }
 
 
-impl<'a> WaypointInterface for Airport<'a> {
+impl WaypointInterface for Airport {
     fn code(&self) -> &str {
         return &self.waypoint.code;
     }
@@ -38,7 +39,7 @@ impl<'a> WaypointInterface for Airport<'a> {
     }
 }
 
-impl<'a> fmt::Debug for Airport<'a> {
+impl fmt::Debug for Airport {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         return write!(f,
                       "Airport: {{code: {}, name: {}, pos: [{}, {}]}}",
