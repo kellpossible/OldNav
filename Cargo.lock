@@ -3,6 +3,7 @@ name = "oldnav"
 version = "0.1.0"
 dependencies = [
  "astro 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "chrono 0.2.25 (registry+https://github.com/rust-lang/crates.io-index)",
  "geojson 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "nalgebra 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -24,6 +25,15 @@ version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "chrono"
+version = "0.2.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "num 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
+ "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "gcc"
 version = "0.3.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -34,6 +44,15 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "kernel32-sys"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi-build 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -146,6 +165,26 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "time"
+version = "0.1.35"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)",
+ "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "winapi"
+version = "0.2.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "winapi-build"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "xplane_plugin"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -173,8 +212,10 @@ dependencies = [
 [metadata]
 "checksum astro 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "199632e1a87451cf771da7adeba192cab923ede42657ac3de0133ba6f4ae14be"
 "checksum bitflags 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "a41f80ec2e140d19e789764fdf22d0f2da98fe7e55d26f99db59cb3d2605d327"
+"checksum chrono 0.2.25 (registry+https://github.com/rust-lang/crates.io-index)" = "9213f7cd7c27e95c2b57c49f0e69b1ea65b27138da84a170133fd21b07659c00"
 "checksum gcc 0.3.35 (registry+https://github.com/rust-lang/crates.io-index)" = "91ecd03771effb0c968fd6950b37e89476a578aaf1c70297d8e92b6516ec3312"
 "checksum geojson 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "031559e1156c90cc95853a30aeb1334c89f4e89031671382a1326e91b298c459"
+"checksum kernel32-sys 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
 "checksum libc 0.2.16 (registry+https://github.com/rust-lang/crates.io-index)" = "408014cace30ee0f767b1c4517980646a573ec61a57957aeeabcac8ac0a02e8d"
 "checksum nalgebra 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)" = "f754f64bd1a5f5899285c2e182df7ddebcecf466369663be2277ca01b6da5d5d"
 "checksum nanovg 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "cba84ac18c75b828d3e734f1726de3a6968439ce35566270ce0d184bcbd68421"
@@ -188,6 +229,9 @@ dependencies = [
 "checksum rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)" = "2791d88c6defac799c3f20d74f094ca33b9332612d9aef9078519c82e4fe04a5"
 "checksum rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)" = "6159e4e6e559c81bd706afe9c8fd68f547d3e851ce12e76b1de7914bab61691b"
 "checksum sun 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "dfc29238f46800dc0e29dbc0b3cab5e745dd40560220f759e30d298740781b59"
+"checksum time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)" = "3c7ec6d62a20df54e07ab3b78b9a3932972f4b7981de295563686849eb3989af"
+"checksum winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "167dc9d6949a9b857f3451275e911c3f44255842c1f7a76f33c55103a909087a"
+"checksum winapi-build 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "2d315eee3b34aca4797b2da6b13ed88266e6d612562a0c46390af8299fc699bc"
 "checksum xplane_plugin 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "4219620b77b0bac9a6e9adf5a4c8bd8f309f24b5df7ce2c577c64827eacae2d7"
 "checksum xplm 0.1.9 (registry+https://github.com/rust-lang/crates.io-index)" = "75ce2213759c28725424ffd8ab6b4441802598d6c963821188c417599e898abe"
 "checksum xplm-sys 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "8974785710819c3baa80cddad190b7cce0a0c0a7122dfc779e5ed8697b4f1d2d"
