@@ -24,6 +24,13 @@ use linked_list::LinkedList;
 /// let leg2 = Leg::new(c2.clone(), c3.clone());
 ///
 /// assert_eq!(leg1.start.name, c1.name);
+///
+/// let mut route = Route::new("a new route");
+/// route.append_leg(leg1);
+/// route.append_leg(leg2);
+///
+/// assert_eq!(route.first().unwrap().name, c1.name);
+/// assert_eq!(route.last().unwrap().name, c3.name);
 /// ```
 #[derive(Debug)]
 pub struct Route {
@@ -34,12 +41,17 @@ pub struct Route {
     pub legs: LinkedList<Leg>,
 }
 
+//TODO TODO TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ################################
+// maybe a route should be comprised just of waypoints?
+// what would be the deal with having SIDs and STARs?
+// more research needs to be done here.
+
 
 impl Route {
     /// Constructor for `Route`
-    pub fn new(name: String) -> Route {
+    pub fn new<S: Into<String>>(name: S) -> Route {
         Route {
-            name: name,
+            name: name.into(),
             legs: LinkedList::new(),
         }
     }
@@ -54,18 +66,32 @@ impl Route {
 
     /// Apend a leg to the end of this route
     pub fn append_leg(&mut self, leg: Leg) {
-    	self.legs.push_back(leg);
+        self.legs.push_back(leg);
+    }
+
+    /// Returns the number of waypoints in the route.
+    pub fn len(&self) -> usize {
+        return self.legs.len();
     }
 
     /// Returns the number of legs in the route.
-    pub fn len(&self) -> usize {
-    	return self.legs.len();
+    pub fn len_legs(&self) -> usize {
+        return self.legs.len();
     }
 
-    
     /// Insert a leg into this route at the given index position.
     pub fn insert_leg(&mut self, index: usize, leg: Leg) {
-    	self.legs.insert(index, leg);    	
+        self.legs.insert(index, leg);
+    }
+
+    /// Get the first leg in the route.
+    pub fn first(&self) -> Option<&Leg> {
+        return self.legs.back();
+    }
+
+    /// Get the last leg in the route.
+    pub fn last(&self) -> Option<&Leg> {
+        return self.legs.front();
     }
 }
 
@@ -76,7 +102,7 @@ pub struct Leg {
     pub start: Rc<Waypoint>,
 
     /// End waypoint of the `Leg`
-    pub end: Rc<Waypoint>,
+    pub end: Option<Rc<Waypoint>>,
 }
 
 impl Leg {
@@ -84,7 +110,14 @@ impl Leg {
     pub fn new(start: Rc<Waypoint>, end: Rc<Waypoint>) -> Leg {
         Leg {
             start: start,
-            end: end,
+            end: Some(end),
+        }
+    }
+
+    pub fn new_single(start: Rc<Waypoint>) -> Leg {
+        Leg {
+            start: start,
+            end: None,
         }
     }
 }
