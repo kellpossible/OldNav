@@ -201,6 +201,10 @@ impl Database {
     }
 
     //TODO add an enumset for waypoint type.
+
+    /// Find a waypoint which matches the supplied parameters.
+    /// + code: the icao code for the waypoint
+    /// + position and max_dist: max distance of the waypoint from the given position
     pub fn match_waypoint(&self, code: &str, position: &SphericalCoordinate, max_dist: f64) -> Option<&Rc<Waypoint>> {
         let matching_waypoints = self.waypoint_hash.get(&String::from(code));
 

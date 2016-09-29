@@ -19,7 +19,7 @@ use linked_list::LinkedList;
 /// let p3 = SphericalCoordinate::from_geographic(0.0, 39.0, 145.0);
 /// let c3 = Rc::new(Waypoint::new("1C", "Waypoint 1C", p3, None));
 ///
-/// let mut route = Route::new("a new route");
+/// let mut route = Route::new(Some(String::from("a new route")));
 /// route.append_waypoint(c1.clone());
 /// route.append_waypoint(c2.clone());
 /// route.append_waypoint(c3.clone());

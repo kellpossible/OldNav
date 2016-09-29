@@ -9,7 +9,7 @@ use std::fmt;
 
 /// Not currently used
 pub struct MultiHash<K, V> {
-    pub map: HashMap<K, Vec<V>>,
+    map: HashMap<K, Vec<V>>,
 }
 
 
