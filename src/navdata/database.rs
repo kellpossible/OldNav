@@ -1,10 +1,11 @@
 //! The Navdata Database - Loaded from the x-plane GNS430 database.
 
 use navdata::waypoint::Waypoint;
-// use navdata::multihash::MultiHash;
+use navdata::multihash::MultiHash;
 // use navdata::waypoint::WaypointInterface;
 use navdata::country::Country;
 use navdata::coord::SphericalCoordinate;
+use navdata::route::Route;
 use std::collections::HashMap;
 use std::io::{BufReader, BufRead};
 use std::fs::File;
@@ -13,23 +14,31 @@ use std::rc::Rc;
 use std::fmt;
 use chrono::{DateTime, UTC, TimeZone};
 use chrono::format::ParseResult;
+use std::mem;
+
 
 /// A navigation database
 pub struct Database {
     /// Where all the fixes are stored in the database
     pub fixes: Vec<Rc<Waypoint>>,
+
+    /// hash of waypoints associated with their names
+    pub waypoint_hash: MultiHash<String, Rc<Waypoint>>,
+
     // note: if I want to make waypoint mutable, or country mutable,
     // I may need to put them in a Rc<RefCell<Waypoint>>.
-
+    //
     // pub airports: Vec<Airport<'a>>,
     // pub waypoints: MultiHash<String, &'a WaypointInterface>,
-
     /// Where all the countries are stored in the database
     pub countries: HashMap<String, Rc<Country>>,
 
+    /// Where all the airways are stored in the database
+    pub airways: HashMap<String, Rc<Route>>,
+
     /// Information about the current AIRAC cycle loaded into this navigation
     /// database.
-    pub cycle_info: CycleInfo
+    pub cycle_info: CycleInfo,
 }
 
 impl Database {
@@ -44,19 +53,26 @@ impl Database {
         let cycle_info_path = navdata_dir.join("cycle_info.txt");
         let cycle_info_path = cycle_info_path.to_str().unwrap();
 
+        let airways_path = navdata_dir.join("ats.txt");
+        let airways_path = airways_path.to_str().unwrap();
+
         let mut db = Database {
             countries: HashMap::new(),
+            airways: HashMap::new(),
             fixes: Vec::new(),
-            cycle_info: read_cycle_info(cycle_info_path)
+            waypoint_hash: MultiHash::new(),
+            cycle_info: read_cycle_info(cycle_info_path),
         };
 
         db.read_countries(countries_path);
         db.read_fixes(waypoints_path);
+        db.read_airways(airways_path);
 
         return db;
     }
 
     /// Read Waypoints.txt file from x-plane's gns430 nav data to obtain fixes.
+    /// Needs to be called after read_countries in order to reference the countries.
     fn read_fixes(&mut self, file_path: &str) {
         let f = File::open(file_path).expect(&format!("Cannot open file {}", file_path));
 
@@ -74,13 +90,12 @@ impl Database {
             // unwrap the option and get a counted reference to the country
             let country = match self.countries.get(split[3]) {
                 None => None,
-                Some(v) => {Some(v.clone())}
+                Some(v) => Some(v.clone()),
             };
 
-            self.fixes.push(Rc::new(Waypoint::new(waypoint_code.clone(),
-                                                  waypoint_code,
-                                                  pos,
-                                                  country)));
+            let waypoint =
+                Waypoint::new(waypoint_code.clone(), waypoint_code.clone(), pos, country);
+            self.insert_fix(waypoint)
         }
 
     }
@@ -106,17 +121,117 @@ impl Database {
         }
 
     }
+
+    /// Read the airways into the database.
+    /// Needs to be called after read_fixes()
+    fn read_airways(&mut self, file_path: &str) {
+        let f = File::open(file_path).expect(&format!("Cannot open file {}", file_path));
+
+        let bf = BufReader::new(&f);
+
+        let mut new_airway = Route::new(None);
+        let mut first_leg: bool = true; //first leg in airway
+        let mut valid_airway = true;
+
+        for line in bf.lines() {
+            let l = line.unwrap();
+
+            if l == "" {
+                if valid_airway {
+                    // allow us to insert this airway into airways,
+                    // and continue to create new airways without the new_airway
+                    // value getting moved.
+                    let a = Rc::new(mem::replace(&mut new_airway, Route::new(None)));
+                    let s = a.name.clone();
+
+                    self.airways.insert(s.unwrap(), a);
+                }
+
+            } else {
+                let split: Vec<&str> = l.split(",").collect();
+                let value_type = split[0].to_string();
+
+                if value_type == "A" {
+                    new_airway.name = Some(split[1].to_string());
+                    valid_airway = true;
+                    first_leg = true;
+                }
+
+                if value_type == "S" {
+                    // read first point in the leg, only for the first leg
+                    if first_leg {
+                        let w1_code = split[1].to_string();
+                        let lat1: f64 = split[2].to_string().parse().unwrap();
+                        let lon1: f64 = split[3].to_string().parse().unwrap();
+                        let p1 = SphericalCoordinate::from_geographic(0.0, lat1, lon1);
+
+                        let result = self.match_waypoint(&w1_code, &p1, 0.1);
+                        if result.is_some() {
+                            new_airway.append_waypoint(result.unwrap().clone());
+                        } else {
+                            valid_airway = false;
+                        }
+                    }
+
+                    // second point in the leg for every leg except the first one.
+                    let w2_code = split[4].to_string();
+                    let lat2: f64 = split[5].to_string().parse().unwrap();
+                    let lon2: f64 = split[6].to_string().parse().unwrap();
+                    let p2 = SphericalCoordinate::from_geographic(0.0, lat2, lon2);
+
+                    let result = self.match_waypoint(&w2_code, &p2, 0.1);
+                    if result.is_some() {
+                        new_airway.append_waypoint(result.unwrap().clone());
+                    } else {
+                        valid_airway = false;
+                    }
+
+                    first_leg = false;
+                }
+            }
+
+        }
+    }
+
+    /// Insert a fix waypoint into this database.
+    pub fn insert_fix(&mut self, waypoint: Waypoint) {
+        let waypoint_ref = Rc::new(waypoint);
+        self.waypoint_hash.insert(waypoint_ref.name.clone(), waypoint_ref.clone());
+        self.fixes.push(waypoint_ref);
+    }
+
+    //TODO add an enumset for waypoint type.
+    pub fn match_waypoint(&self, code: &str, position: &SphericalCoordinate, max_dist: f64) -> Option<&Rc<Waypoint>> {
+        let matching_waypoints = self.waypoint_hash.get(&String::from(code));
+
+        if matching_waypoints.is_none() {
+            println!("Warning: this waypoint does not exist in the database: {} [{},{}]",
+                     code,
+                     position.lat(),
+                     position.lon());
+            return None;
+        } else {
+            let matching_waypoints: &Vec<Rc<Waypoint>> = matching_waypoints.unwrap();
+
+            println!("matching waypoings to {}", code);
+            for waypoint in &*matching_waypoints {
+                println!("{:?}", waypoint);
+            }
+
+            return Some(&matching_waypoints[0]);
+        }
+    }
 }
 
 
 impl fmt::Debug for Database {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         return write!(f,
-                      "Database: {{n_fixes: {}, n_airports: {}, n_countries: {}}}",
+                      "Database: {{n_fixes: {}, n_airports: {}, n_countries: {}, n_airways: {}}}",
                       self.fixes.len(),
                       0,
-                      self.countries.len()
-                      );
+                      self.countries.len(),
+                      self.airways.len());
 
     }
 }
@@ -143,22 +258,23 @@ pub struct CycleInfo {
     /// The date after which this cycle expires and becomes invalid
     pub valid_to: DateTime<UTC>,
     /// Message embedded with the cycle data
-    pub message: String
+    pub message: String,
 }
 
 impl CycleInfo {
     /// Constructor for `CycleInfo`
     pub fn new(airac_cycle: i32,
-    version: i32,
-    valid_from: DateTime<UTC>,
-    valid_to: DateTime<UTC>,
-    message: String) -> CycleInfo {
+               version: i32,
+               valid_from: DateTime<UTC>,
+               valid_to: DateTime<UTC>,
+               message: String)
+               -> CycleInfo {
         CycleInfo {
             airac_cycle: airac_cycle,
-    version: version,
-    valid_from: valid_from,
-    valid_to: valid_to,
-    message: message
+            version: version,
+            valid_from: valid_from,
+            valid_to: valid_to,
+            message: message,
         }
     }
 }
@@ -179,7 +295,7 @@ fn read_cycle_info(file_path: &str) -> CycleInfo {
         if split.len() > 0 {
             let lhs = split[0].trim();
 
-            if lhs == "AIRAC cycle"  {
+            if lhs == "AIRAC cycle" {
                 let rhs = split[1].trim();
                 values.insert(String::from("airac_cycle"), String::from(rhs));
             } else if lhs == "Version" {
@@ -210,7 +326,7 @@ fn read_cycle_info(file_path: &str) -> CycleInfo {
     let to_date_str = values.get("from_date").unwrap();
     let to_date = parse_date_str(to_date_str).unwrap();
 
-    return CycleInfo::new(airac_cycle,version,from_date, to_date, message);
+    return CycleInfo::new(airac_cycle, version, from_date, to_date, message);
 }
 
 
