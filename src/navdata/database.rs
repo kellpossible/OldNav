@@ -16,6 +16,72 @@ use chrono::{DateTime, UTC, TimeZone};
 use chrono::format::ParseResult;
 use std::mem;
 
+/// The result of a query for waypoint or waypoints in `Database`
+pub enum WaypointQueryResult<T> {
+    /// `T` was found
+    Found(T),
+
+    /// `T` was found but it was too far.
+    TooFar(T),
+
+    /// `T` was not found at all.
+    NotFound
+}
+
+impl<T> WaypointQueryResult<T> {
+    /// Returns true if the result is `Found`.
+    #[inline]
+    pub fn is_found(self) -> bool {
+        match self {
+            WaypointQueryResult::Found(_) => true,
+            WaypointQueryResult::TooFar(_) => false,
+            WaypointQueryResult::NotFound => false,
+        }
+    }
+
+    /// Returns true if the result is `None`.
+    #[inline]
+    pub fn is_none(self) -> bool {
+        match self {
+            WaypointQueryResult::Found(_) => false,
+            WaypointQueryResult::TooFar(_) => false,
+            WaypointQueryResult::NotFound => true,
+        }
+    }
+
+    /// Returns true if the result is `TooFar`.
+    #[inline]
+    pub fn is_too_far(self) -> bool {
+        match self {
+            WaypointQueryResult::Found(_) => false,
+            WaypointQueryResult::TooFar(_) => false,
+            WaypointQueryResult::NotFound => true,
+        }
+    }
+
+    /// Converts from `WaypointQueryResult<T> to `Option<T>`
+    /// Returns a None if the result is not Found.
+    #[inline]
+    pub fn found(self) -> Option<T> {
+        match self {
+            WaypointQueryResult::Found(x) => Some(x),
+            WaypointQueryResult::TooFar(_) => None,
+            WaypointQueryResult::NotFound => None,
+        }
+    }
+
+    /// Converts from `WaypointQueryResult<T> to `Option<T>`.
+    /// Returns a None if the result is not TooFar.
+    #[inline]
+    pub fn too_far(self) -> Option<T> {
+        match self {
+            WaypointQueryResult::Found(_) => None,
+            WaypointQueryResult::TooFar(x) => Some(x),
+            WaypointQueryResult::NotFound => None,
+        }
+    }
+}
+
 
 /// A navigation database
 pub struct Database {
@@ -131,7 +197,7 @@ impl Database {
 
         let mut new_airway = Route::new(None);
         let mut first_leg: bool = true; //first leg in airway
-        let mut valid_airway = true;
+        let mut valid_airway = true; // whether or not all the waypoints are valid
 
         for line in bf.lines() {
             let l = line.unwrap();
@@ -165,7 +231,7 @@ impl Database {
                         let lon1: f64 = split[3].to_string().parse().unwrap();
                         let p1 = SphericalCoordinate::from_geographic(0.0, lat1, lon1);
 
-                        let result = self.match_waypoint(&w1_code, &p1, 0.1);
+                        let result = self.match_waypoint_dist(&w1_code, &p1, 0.1);
                         if result.is_some() {
                             new_airway.append_waypoint(result.unwrap().clone());
                         } else {
@@ -179,7 +245,7 @@ impl Database {
                     let lon2: f64 = split[6].to_string().parse().unwrap();
                     let p2 = SphericalCoordinate::from_geographic(0.0, lat2, lon2);
 
-                    let result = self.match_waypoint(&w2_code, &p2, 0.1);
+                    let result = self.match_waypoint_dist(&w2_code, &p2, 0.1);
                     if result.is_some() {
                         new_airway.append_waypoint(result.unwrap().clone());
                     } else {
@@ -202,10 +268,10 @@ impl Database {
 
     //TODO add an enumset for waypoint type.
 
-    /// Find a waypoint which matches the supplied parameters.
+    /// Find a waypoint which most closely matches the supplied parameters.
     /// + code: the icao code for the waypoint
     /// + position and max_dist: max distance of the waypoint from the given position
-    pub fn match_waypoint(&self, code: &str, position: &SphericalCoordinate, max_dist: f64) -> Option<&Rc<Waypoint>> {
+    pub fn match_waypoint_dist(&self, code: &str, position: &SphericalCoordinate, max_dist: f64) -> Option<&Rc<Waypoint>> {
         let matching_waypoints = self.waypoint_hash.get(&String::from(code));
 
         if matching_waypoints.is_none() {

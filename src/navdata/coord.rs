@@ -300,6 +300,7 @@ impl SphericalCoordinate {
     }
 
     /// arc distance between two points along the surface of the sphere.
+    /// **warning: untested!**
     pub fn arc_distance(&self, other: &SphericalCoordinate) -> f64 {
         return self.r *
                f64::cos(self.theta.cos() * other.theta.cos() +
@@ -313,6 +314,13 @@ impl SphericalCoordinate {
                 self.alt(),
                 self.lat(),
                 self.lon())
+    }
+
+    /// A very simple difference in angle heuristic
+    pub fn angle_difference_heuristic(&self, other: &SphericalCoordinate) -> f64 {
+        let dtheta = other.theta - self.theta;
+        let dphi = other.phi - self.phi;
+        return f64::sqrt(dtheta*dtheta + dphi*dphi);
     }
 }
 
@@ -335,4 +343,18 @@ impl fmt::Display for SphericalCoordinate {
                self.theta,
                self.phi)
     }
+}
+
+/// Convert degrees minutes seconds format into seconds.
+/// 
+/// Examples:
+/// 
+/// ```
+/// # use oldnav_lib::navdata::coord::dms_to_deg;
+/// let accuracy = 0.0001;
+/// let deg = dms_to_deg(10.0, 4.0, 6.0);
+/// assert!((deg - 10.06833).abs() < accuracy);
+/// ```
+pub fn dms_to_deg(degrees: f64, minutes: f64, seconds: f64) -> f64 {
+    return degrees + minutes/60.0 + seconds/3600.0;
 }
