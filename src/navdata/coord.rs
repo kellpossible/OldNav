@@ -81,7 +81,7 @@ pub static EARTH_MSL_RADIUS: f64 = 6371008.8;
 ///
 #[derive(Copy, Clone)]
 pub struct SphericalCoordinate {
-    //todo: replace this struct with a trait for Vector3
+    // todo: replace this struct with a trait for Vector3
     /// Radius component
     pub r: f64,
 
@@ -312,7 +312,7 @@ impl SphericalCoordinate {
     pub fn arc_distance(&self, other: &SphericalCoordinate) -> f64 {
         // if greater accuracy is required, might be worth checking out the haversine formula
         // or this: https://goo.gl/Niyn91
-        return self.r * (self.r_cart_uv().dot(&other.r_cart_uv()).acos());    
+        return self.r * (self.r_cart_uv().dot(&other.r_cart_uv()).acos());
     }
 
     /// Format the `SphericalCoordinate` as a Geographical point string (altitude,
@@ -328,7 +328,7 @@ impl SphericalCoordinate {
     pub fn angle_difference_heuristic(&self, other: &SphericalCoordinate) -> f64 {
         let dtheta = other.theta - self.theta;
         let dphi = other.phi - self.phi;
-        return f64::sqrt(dtheta*dtheta + dphi*dphi);
+        return f64::sqrt(dtheta * dtheta + dphi * dphi);
     }
 }
 
@@ -361,18 +361,20 @@ impl geohash::Geohashable<SphericalCoordinate> for SphericalCoordinate {
         return Ok(coord);
     }
     fn integer_encode(&self, precision: u8) -> Result<u64, String> {
-        return geohash::encode(
-            &Vector2{ x: self.lon(), y: self.lat()},
-            precision,
-            &geohash::LATLON_BOUNDS);
+        return geohash::encode(&Vector2 {
+                                   x: self.lon(),
+                                   y: self.lat(),
+                               },
+                               precision,
+                               &geohash::LATLON_BOUNDS);
     }
 }
 
 
 /// Convert degrees minutes seconds format into seconds.
-/// 
+///
 /// Examples:
-/// 
+///
 /// ```
 /// # use oldnav_lib::navdata::coord::dms_to_deg;
 /// let accuracy = 0.0001;
@@ -380,5 +382,5 @@ impl geohash::Geohashable<SphericalCoordinate> for SphericalCoordinate {
 /// assert!((deg - 10.06833).abs() < accuracy);
 /// ```
 pub fn dms_to_deg(degrees: f64, minutes: f64, seconds: f64) -> f64 {
-    return degrees + minutes/60.0 + seconds/3600.0;
+    return degrees + minutes / 60.0 + seconds / 3600.0;
 }

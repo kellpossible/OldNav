@@ -8,9 +8,10 @@
 
 // todo: keep implementing stuff
 // geohashrust/geohash.rs.html
-// http://gis.stackexchange.com/questions/18330/would-it-be-possible-to-use-geohash-for-proximity-searches
+// http://gis.stackexchange.com/questions/18330/would-it-be-possible-
+// to-use-geohash-for-proximity-searches
 
-use nalgebra::{Vector2};
+use nalgebra::Vector2;
 
 // first 4 bits is currently reserved for the precision with a range of 1 to 16
 
@@ -88,11 +89,11 @@ impl Rectifiable for Vector2<f64> {
 
         if self.y > range.y_max {
             self.y = y_range - self.y;
-            self.x += x_range/2.0;
+            self.x += x_range / 2.0;
         } else {
             if self.y < range.y_min {
                 self.y = -(self.y + y_range);
-                self.x += x_range/2.0;
+                self.x += x_range / 2.0;
             }
         }
 
@@ -123,13 +124,12 @@ pub struct Bounds {
     pub y_min: f64,
 
     /// y coordinate maximum
-    pub y_max: f64
+    pub y_max: f64,
 }
 
 impl Bounds {
     /// Constructor for `Bounds`
-    pub fn new(x_min: f64, x_max: f64, y_min: f64, y_max: f64) -> Bounds
-    {
+    pub fn new(x_min: f64, x_max: f64, y_min: f64, y_max: f64) -> Bounds {
         Bounds {
             x_min: x_min,
             x_max: x_max,
@@ -140,9 +140,9 @@ impl Bounds {
 
     /// Get the midpoint of this `Bound`
     pub fn mid(&self) -> Vector2<f64> {
-        Vector2{
-            x: (self.x_max + self.x_min)/2.0,
-            y: (self.y_max + self.y_min)/2.0
+        Vector2 {
+            x: (self.x_max + self.x_min) / 2.0,
+            y: (self.y_max + self.y_min) / 2.0,
         }
     }
 
@@ -180,10 +180,8 @@ impl Bounds {
     /// # }
     /// ```
     pub fn contains(&self, position: &Vector2<f64>) -> bool {
-        if position.x <= self.x_max &&
-            position.x >= self.x_min &&
-            position.y <= self.y_max &&
-            position.y >= self.y_min {
+        if position.x <= self.x_max && position.x >= self.x_min && position.y <= self.y_max &&
+           position.y >= self.y_min {
             return true;
         }
         return false;
@@ -228,31 +226,33 @@ pub static LATLON_BOUNDS: Bounds = Bounds {
 /// ```
 pub fn encode(position: &Vector2<f64>, precision: u8, range: &Bounds) -> Result<u64, String> {
     if precision > PRECISION_MAX || precision < PRECISION_MIN {
-        return Err(format!("Precision must be in the range of {} to {}", PRECISION_MIN, PRECISION_MAX));
+        return Err(format!("Precision must be in the range of {} to {}",
+                           PRECISION_MIN,
+                           PRECISION_MAX));
     }
 
     let mut current_range: Bounds = range.clone();
 
-    let mut hash: u64 = (precision as u64)-1;
+    let mut hash: u64 = (precision as u64) - 1;
 
     let mut do_x = true;
 
     // start leaving room for the precision bits
     let mut i = PRECISION_BITS;
-    let end = precision+PRECISION_BITS;
+    let end = precision + PRECISION_BITS;
     while i < end {
         let mid = current_range.mid();
 
         if do_x {
             if position.x > mid.x {
-                hash |= 1<<i;
+                hash |= 1 << i;
                 current_range.x_min = mid.x;
             } else {
                 current_range.x_max = mid.x;
             }
         } else {
             if position.y > mid.y {
-                hash |= 1<<i;
+                hash |= 1 << i;
                 current_range.y_min = mid.y;
             } else {
                 current_range.y_max = mid.y;
@@ -289,10 +289,10 @@ pub fn hash_to_string(geohash: u64) -> Result<String, String> {
     println!("Precision {}", precision);
 
     let mut i = PRECISION_BITS;
-    let end = PRECISION_BITS+precision;
+    let end = PRECISION_BITS + precision;
     while i < end {
-        let val = geohash & 1<<i;
-        string.push(if val>0 {'1'} else {'0'});
+        let val = geohash & 1 << i;
+        string.push(if val > 0 { '1' } else { '0' });
         i += 1;
     }
 
@@ -313,19 +313,18 @@ pub fn hash_from_string(string: &str) -> Result<u64, String> {
     let precision = string.len();
 
     if precision > (PRECISION_MAX as usize) || precision < (PRECISION_MIN as usize) {
-        return Err(
-            format!("String too long, its length must be in the range of {} to {}",
-                    PRECISION_MIN,
-                    PRECISION_MAX));
+        return Err(format!("String too long, its length must be in the range of {} to {}",
+                           PRECISION_MIN,
+                           PRECISION_MAX));
     }
 
-    let mut hash: u64 = (precision as u64)-1;
+    let mut hash: u64 = (precision as u64) - 1;
 
     let mut i = PRECISION_BITS;
 
     for char in string.chars() {
         if char == '1' {
-            hash |= 1<<i;
+            hash |= 1 << i;
         }
         i += 1;
     }
@@ -358,11 +357,10 @@ pub fn decode(geohash: u64, range: &Bounds) -> Result<Bounds, String> {
 pub fn decode_precision(geohash: u64, precision: u8, range: &Bounds) -> Result<Bounds, String> {
     let hp: u8 = hash_precision(geohash);
     if precision > hp {
-        return Err(format!(
-            "Selected precision ({}) is greater than the max precision of the hash: ({})",
-            precision,
-            hp
-        ));
+        return Err(format!("Selected precision ({}) is greater than the max precision of the \
+                            hash: ({})",
+                           precision,
+                           hp));
     }
 
     return decode_precision_nocheck(geohash, precision, range);
@@ -370,26 +368,29 @@ pub fn decode_precision(geohash: u64, precision: u8, range: &Bounds) -> Result<B
 
 /// decode an integer geohash with specified precision, without checking
 /// whether or not the precision is less than the hash's internal precision.
-pub fn decode_precision_nocheck(geohash: u64, precision: u8, range: &Bounds) -> Result<Bounds, String> {
+pub fn decode_precision_nocheck(geohash: u64,
+                                precision: u8,
+                                range: &Bounds)
+                                -> Result<Bounds, String> {
     let mut current_range: Bounds = range.clone();
 
     let mut do_x = true;
 
 
     let mut i = PRECISION_BITS;
-    let end = PRECISION_BITS+precision;
+    let end = PRECISION_BITS + precision;
 
     while i < end {
         let mid = current_range.mid();
 
         if do_x {
-            if geohash & 1<<i > 0 {
+            if geohash & 1 << i > 0 {
                 current_range.x_min = mid.x;
             } else {
                 current_range.x_max = mid.x;
             }
         } else {
-            if geohash & 1<<i > 0 {
+            if geohash & 1 << i > 0 {
                 current_range.y_min = mid.y;
             } else {
                 current_range.y_max = mid.y;
@@ -433,15 +434,19 @@ pub fn hash_precision(geohash: u64) -> u8 {
 /// ```
 ///
 /// ```
-pub fn neighbor(geohash: u64, dir: (i8, i8), range: &Bounds, spherical: bool) -> Result<u64, String> {
+pub fn neighbor(geohash: u64,
+                dir: (i8, i8),
+                range: &Bounds,
+                spherical: bool)
+                -> Result<u64, String> {
     let b: Bounds = try!(decode(geohash, range));
     let precision = hash_precision(geohash);
     let (x_dir, y_dir) = dir;
     let midpoint = b.mid();
 
-    let mut np = Vector2{
-        x: midpoint.x + b.x_range()*(x_dir as f64),
-        y: midpoint.y + b.y_range()*(y_dir as f64)
+    let mut np = Vector2 {
+        x: midpoint.x + b.x_range() * (x_dir as f64),
+        y: midpoint.y + b.y_range() * (y_dir as f64),
     };
 
     if spherical {

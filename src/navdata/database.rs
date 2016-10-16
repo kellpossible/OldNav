@@ -131,8 +131,8 @@ impl Database {
         };
 
         db.read_countries(countries_path);
-//        db.read_fixes(waypoints_path);
-//        db.read_airways(airways_path);
+        //        db.read_fixes(waypoints_path);
+        //        db.read_airways(airways_path);
 
         return db;
     }
@@ -266,26 +266,31 @@ impl Database {
         self.fixes.push(waypoint_ref);
     }
 
-    //TODO add an enumset for waypoint type.
+    // TODO add an enumset for waypoint type.
 
     /// Find a waypoint which most closely matches the supplied parameters.
     /// + code: the icao code for the waypoint
     /// + position and max_dist: max distance of the waypoint from the given position
-    pub fn match_waypoint_dist(&self, code: &str, position: &SphericalCoordinate, max_dist: f64) -> Option<&Rc<Waypoint>> {
+    pub fn match_waypoint_dist(&self,
+                               code: &str,
+                               position: &SphericalCoordinate,
+                               max_dist: f64)
+                               -> Option<&Rc<Waypoint>> {
         let matching_waypoints = self.waypoint_hash.get(&String::from(code));
 
         if matching_waypoints.is_none() {
-//            println!("Warning: this waypoint does not exist in the database: {} [{},{}]",
-//                     code,
-//                     position.lat(),
-//                     position.lon());
+            //            println!("Warning: this waypoint does not exist in the
+            // database: {} [{},{}]",
+            //                     code,
+            //                     position.lat(),
+            //                     position.lon());
             return None;
         } else {
             let matching_waypoints: &Vec<Rc<Waypoint>> = matching_waypoints.unwrap();
 
-//            println!("matching waypoings to {}", code);
+            //            println!("matching waypoings to {}", code);
             for waypoint in &*matching_waypoints {
-//                println!("{:?}", waypoint);
+                //                println!("{:?}", waypoint);
             }
 
             return Some(&matching_waypoints[0]);
