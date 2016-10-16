@@ -16,7 +16,7 @@ version = "*"
 features = ["gl2"]
 
 [dependencies]
-nalgebra = "0.10.*"
+nalgebra = "0.10.1"
 astro = "2.0.0"
 sun = "0.2"
 geojson = "0.4.0"

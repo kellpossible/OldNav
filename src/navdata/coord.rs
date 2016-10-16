@@ -2,7 +2,7 @@
 //!
 //! TODO: more explaination here
 
-use nalgebra::{Vector3, Dot};
+use nalgebra::{Vector3, Dot, Vector2};
 use std::f64::consts::PI;
 use std::f64::*;
 use std::fmt;
@@ -22,7 +22,7 @@ pub static EARTH_MSL_RADIUS: f64 = 6371008.8;
 /// |------|---------------|
 /// | r    | 0 -> infinity |
 /// |theta |  (0 -> 2PI)   |
-/// |phi   |  (-PI -> PI)  |
+/// |phi   |  (0 -> PI)  |
 ///
 /// See: http://mathworld.wolfram.com/SphericalCoordinates.html for more details.
 ///
@@ -81,6 +81,7 @@ pub static EARTH_MSL_RADIUS: f64 = 6371008.8;
 ///
 #[derive(Copy, Clone)]
 pub struct SphericalCoordinate {
+    //todo: replace this struct with a trait for Vector3
     /// Radius component
     pub r: f64,
 
@@ -210,6 +211,11 @@ impl SphericalCoordinate {
         if self.phi > PI {
             self.phi = TWO_PI - self.phi;
             self.theta += PI;
+        } else {
+            if self.phi < 0.0 {
+                self.phi = -(TWO_PI + self.phi);
+                self.theta += PI;
+            }
         }
 
         while self.theta > TWO_PI {
@@ -356,7 +362,7 @@ impl geohash::Geohashable<SphericalCoordinate> for SphericalCoordinate {
     }
     fn integer_encode(&self, precision: u8) -> Result<u64, String> {
         return geohash::encode(
-            &geohash::Position{ y: self.lat(), x: self.lon()},
+            &Vector2{ x: self.lon(), y: self.lat()},
             precision,
             &geohash::LATLON_BOUNDS);
     }
