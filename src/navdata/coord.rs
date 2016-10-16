@@ -2,16 +2,17 @@
 //!
 //! TODO: more explaination here
 
-use nalgebra::Vector3;
+use nalgebra::{Vector3, Dot};
 use std::f64::consts::PI;
 use std::f64::*;
 use std::fmt;
+use navdata::geohash;
 
 static TWO_PI: f64 = PI * 2.0;
 static HALF_PI: f64 = PI / 2.0;
 
 /// Mean sea level on earth
-pub static EARTH_MSL_RADIUS: f64 = 6371000.0;
+pub static EARTH_MSL_RADIUS: f64 = 6371008.8;
 
 /// Represents a coordinate in the spherical coordinate system.
 ///
@@ -158,6 +159,7 @@ impl SphericalCoordinate {
     ///
     /// Scale of vector v needs to be in meters, with reference position being the centre of
     /// the sphere.
+
     pub fn from_cartesian(v: Vector3<f64>) -> SphericalCoordinate {
         let r = f64::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
         let mut theta = NAN;
@@ -300,11 +302,11 @@ impl SphericalCoordinate {
     }
 
     /// arc distance between two points along the surface of the sphere.
-    /// **warning: untested!**
+    /// **warning: only tested to be accurate to within 5 meters at earth's surface**
     pub fn arc_distance(&self, other: &SphericalCoordinate) -> f64 {
-        return self.r *
-               f64::cos(self.theta.cos() * other.theta.cos() +
-                        other.theta.sin() * f64::cos(self.phi - other.phi));
+        // if greater accuracy is required, might be worth checking out the haversine formula
+        // or this: https://goo.gl/Niyn91
+        return self.r * (self.r_cart_uv().dot(&other.r_cart_uv()).acos());    
     }
 
     /// Format the `SphericalCoordinate` as a Geographical point string (altitude,
@@ -344,6 +346,22 @@ impl fmt::Display for SphericalCoordinate {
                self.phi)
     }
 }
+
+impl geohash::Geohashable<SphericalCoordinate> for SphericalCoordinate {
+    fn integer_decode(geohash: u64) -> Result<SphericalCoordinate, String> {
+        let bounds = try!(geohash::decode(geohash, &geohash::LATLON_BOUNDS));
+        let pos = bounds.mid();
+        let coord = SphericalCoordinate::from_geographic(0.0, pos.y, pos.x);
+        return Ok(coord);
+    }
+    fn integer_encode(&self, precision: u8) -> Result<u64, String> {
+        return geohash::encode(
+            &geohash::Position{ y: self.lat(), x: self.lon()},
+            precision,
+            &geohash::LATLON_BOUNDS);
+    }
+}
+
 
 /// Convert degrees minutes seconds format into seconds.
 /// 

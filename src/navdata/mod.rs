@@ -8,3 +8,4 @@ pub mod country;
 pub mod route;
 pub mod database;
 pub mod multihash;
+pub mod geohash;

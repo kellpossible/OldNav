@@ -25,7 +25,7 @@ pub enum WaypointQueryResult<T> {
     TooFar(T),
 
     /// `T` was not found at all.
-    NotFound
+    NotFound,
 }
 
 impl<T> WaypointQueryResult<T> {
@@ -91,11 +91,11 @@ pub struct Database {
     /// hash of waypoints associated with their names
     pub waypoint_hash: MultiHash<String, Rc<Waypoint>>,
 
-    // note: if I want to make waypoint mutable, or country mutable,
-    // I may need to put them in a Rc<RefCell<Waypoint>>.
-    //
-    // pub airports: Vec<Airport<'a>>,
-    // pub waypoints: MultiHash<String, &'a WaypointInterface>,
+    /// note: if I want to make waypoint mutable, or country mutable,
+    /// I may need to put them in a Rc<RefCell<Waypoint>>.
+    ///
+    /// pub airports: Vec<Airport<'a>>,
+    /// pub waypoints: MultiHash<String, &'a WaypointInterface>,
     /// Where all the countries are stored in the database
     pub countries: HashMap<String, Rc<Country>>,
 
@@ -131,8 +131,8 @@ impl Database {
         };
 
         db.read_countries(countries_path);
-        db.read_fixes(waypoints_path);
-        db.read_airways(airways_path);
+//        db.read_fixes(waypoints_path);
+//        db.read_airways(airways_path);
 
         return db;
     }
@@ -275,17 +275,17 @@ impl Database {
         let matching_waypoints = self.waypoint_hash.get(&String::from(code));
 
         if matching_waypoints.is_none() {
-            println!("Warning: this waypoint does not exist in the database: {} [{},{}]",
-                     code,
-                     position.lat(),
-                     position.lon());
+//            println!("Warning: this waypoint does not exist in the database: {} [{},{}]",
+//                     code,
+//                     position.lat(),
+//                     position.lon());
             return None;
         } else {
             let matching_waypoints: &Vec<Rc<Waypoint>> = matching_waypoints.unwrap();
 
-            println!("matching waypoings to {}", code);
+//            println!("matching waypoings to {}", code);
             for waypoint in &*matching_waypoints {
-                println!("{:?}", waypoint);
+//                println!("{:?}", waypoint);
             }
 
             return Some(&matching_waypoints[0]);

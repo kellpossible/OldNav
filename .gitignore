@@ -1,5 +1,7 @@
 target
 .idea
+.project
+.settings
 *.sublime-workspace
 Waypoints.txt
 resources/navdata

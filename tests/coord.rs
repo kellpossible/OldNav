@@ -16,12 +16,11 @@ fn test_from_geographic() {
 
 #[test]
 fn test_arc_distance() {
-	let accuracy = 0.0001;
+	let accuracy = 5.0; //5 meters accuracy
     let pos1 = SphericalCoordinate::from_geographic(0.0, 38.0, 148.0);
     let pos2 = SphericalCoordinate::from_geographic(0.0, 38.0, 149.0);
 
     let d = pos1.arc_distance(&pos2);
-    println!("distance {:?} km", d/1000.0);
     assert!((d-87620.0).abs() < accuracy);
 }
 
