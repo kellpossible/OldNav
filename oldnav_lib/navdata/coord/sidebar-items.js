@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["dms_to_deg","Convert degrees minutes seconds format into seconds."]],"static":[["EARTH_MSL_RADIUS","Mean sea level on earth"]],"struct":[["SphericalCoordinate","Represents a coordinate in the spherical coordinate system."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["WaypointQueryResult","The result of a query for waypoint or waypoints in `Database`"]],"struct":[["CycleInfo","AIRAC Cycle Info"],["Database","A navigation database"]]});

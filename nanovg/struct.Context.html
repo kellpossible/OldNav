@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Context` struct in crate `nanovg`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Context">
+
+    <title>nanovg::Context - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>nanovg</a></p><script>window.sidebarCurrent = {name: 'Context', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>nanovg</a>::<wbr><a class='struct' href=''>Context</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-1553' class='srclink' href='../src/nanovg/lib.rs.html#442-444' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Context {
+    // some fields omitted
+}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../nanovg/struct.Context.html' title='nanovg::Context'>Context</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1564' class='srclink' href='../src/nanovg/lib.rs.html#486-934' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.create_gl2' class='method'><code>fn <a href='#method.create_gl2' class='fnname'>create_gl2</a>(flags: <a class='struct' href='../nanovg/struct.CreationFlags.html' title='nanovg::CreationFlags'>CreationFlags</a>) -&gt; <a class='struct' href='../nanovg/struct.Context.html' title='nanovg::Context'>Context</a></code></h4>
+<h4 id='method.begin_frame' class='method'><code>fn <a href='#method.begin_frame' class='fnname'>begin_frame</a>(&amp;self, window_width: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, window_height: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, device_pixel_ratio: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.end_frame' class='method'><code>fn <a href='#method.end_frame' class='fnname'>end_frame</a>(&amp;self)</code></h4>
+<h4 id='method.save' class='method'><code>fn <a href='#method.save' class='fnname'>save</a>(&amp;self)</code></h4>
+<h4 id='method.restore' class='method'><code>fn <a href='#method.restore' class='fnname'>restore</a>(&amp;self)</code></h4>
+<h4 id='method.reset' class='method'><code>fn <a href='#method.reset' class='fnname'>reset</a>(&amp;self)</code></h4>
+<h4 id='method.stroke_color' class='method'><code>fn <a href='#method.stroke_color' class='fnname'>stroke_color</a>(&amp;self, color: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>)</code></h4>
+<h4 id='method.stroke_paint' class='method'><code>fn <a href='#method.stroke_paint' class='fnname'>stroke_paint</a>(&amp;self, paint: <a class='struct' href='../nanovg/struct.Paint.html' title='nanovg::Paint'>Paint</a>)</code></h4>
+<h4 id='method.fill_color' class='method'><code>fn <a href='#method.fill_color' class='fnname'>fill_color</a>(&amp;self, color: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>)</code></h4>
+<h4 id='method.fill_paint' class='method'><code>fn <a href='#method.fill_paint' class='fnname'>fill_paint</a>(&amp;self, paint: <a class='struct' href='../nanovg/struct.Paint.html' title='nanovg::Paint'>Paint</a>)</code></h4>
+<h4 id='method.miter_limit' class='method'><code>fn <a href='#method.miter_limit' class='fnname'>miter_limit</a>(&amp;self, limit: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.stroke_width' class='method'><code>fn <a href='#method.stroke_width' class='fnname'>stroke_width</a>(&amp;self, size: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.line_cap' class='method'><code>fn <a href='#method.line_cap' class='fnname'>line_cap</a>(&amp;self, cap: <a class='enum' href='../nanovg/enum.LineCap.html' title='nanovg::LineCap'>LineCap</a>)</code></h4>
+<h4 id='method.line_join' class='method'><code>fn <a href='#method.line_join' class='fnname'>line_join</a>(&amp;self, join: <a class='enum' href='../nanovg/enum.LineCap.html' title='nanovg::LineCap'>LineCap</a>)</code></h4>
+<h4 id='method.global_alpha' class='method'><code>fn <a href='#method.global_alpha' class='fnname'>global_alpha</a>(&amp;self, alpha: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.reset_transform' class='method'><code>fn <a href='#method.reset_transform' class='fnname'>reset_transform</a>(&amp;self)</code></h4>
+<h4 id='method.transform' class='method'><code>fn <a href='#method.transform' class='fnname'>transform</a>(&amp;self, t: <a class='struct' href='../nanovg/struct.Transform.html' title='nanovg::Transform'>Transform</a>)</code></h4>
+<h4 id='method.translate' class='method'><code>fn <a href='#method.translate' class='fnname'>translate</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.rotate' class='method'><code>fn <a href='#method.rotate' class='fnname'>rotate</a>(&amp;self, angle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.skew_x' class='method'><code>fn <a href='#method.skew_x' class='fnname'>skew_x</a>(&amp;self, angle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.skew_y' class='method'><code>fn <a href='#method.skew_y' class='fnname'>skew_y</a>(&amp;self, angle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.scale' class='method'><code>fn <a href='#method.scale' class='fnname'>scale</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.current_transform' class='method'><code>fn <a href='#method.current_transform' class='fnname'>current_transform</a>(&amp;self) -&gt; <a class='struct' href='../nanovg/struct.Transform.html' title='nanovg::Transform'>Transform</a></code></h4>
+<h4 id='method.create_image' class='method'><code>fn <a href='#method.create_image' class='fnname'>create_image</a>(&amp;self, filename: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>&gt;</code></h4>
+<h4 id='method.create_image_flags' class='method'><code>fn <a href='#method.create_image_flags' class='fnname'>create_image_flags</a>(&amp;self, filename: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, flags: <a class='struct' href='../nanovg/struct.ImageFlags.html' title='nanovg::ImageFlags'>ImageFlags</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>&gt;</code></h4>
+<h4 id='method.create_image_mem' class='method'><code>fn <a href='#method.create_image_mem' class='fnname'>create_image_mem</a>(&amp;self, data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>&gt;</code></h4>
+<h4 id='method.create_image_mem_flags' class='method'><code>fn <a href='#method.create_image_mem_flags' class='fnname'>create_image_mem_flags</a>(&amp;self, data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>, flags: <a class='struct' href='../nanovg/struct.ImageFlags.html' title='nanovg::ImageFlags'>ImageFlags</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>&gt;</code></h4>
+<h4 id='method.create_image_rgba' class='method'><code>fn <a href='#method.create_image_rgba' class='fnname'>create_image_rgba</a>(&amp;self, w: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, h: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>&gt;</code></h4>
+<h4 id='method.create_image_rgba_flags' class='method'><code>fn <a href='#method.create_image_rgba_flags' class='fnname'>create_image_rgba_flags</a>(&amp;self, w: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, h: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>, flags: <a class='struct' href='../nanovg/struct.ImageFlags.html' title='nanovg::ImageFlags'>ImageFlags</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>&gt;</code></h4>
+<h4 id='method.update_image' class='method'><code>fn <a href='#method.update_image' class='fnname'>update_image</a>(&amp;self, image: &amp;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>, data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>)</code></h4>
+<h4 id='method.image_size' class='method'><code>fn <a href='#method.image_size' class='fnname'>image_size</a>(&amp;self, image: &amp;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>(</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>)</a></code></h4>
+<h4 id='method.delete_image' class='method'><code>fn <a href='#method.delete_image' class='fnname'>delete_image</a>(&amp;self, image: <a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>)</code></h4>
+<h4 id='method.linear_gradient' class='method'><code>fn <a href='#method.linear_gradient' class='fnname'>linear_gradient</a>(&amp;self, sx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, sy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, ex: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, ey: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, icol: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>, ocol: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>) -&gt; <a class='struct' href='../nanovg/struct.Paint.html' title='nanovg::Paint'>Paint</a></code></h4>
+<h4 id='method.box_gradient' class='method'><code>fn <a href='#method.box_gradient' class='fnname'>box_gradient</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, w: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, h: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, r: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, f: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, icol: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>, ocol: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>) -&gt; <a class='struct' href='../nanovg/struct.Paint.html' title='nanovg::Paint'>Paint</a></code></h4>
+<h4 id='method.radial_gradient' class='method'><code>fn <a href='#method.radial_gradient' class='fnname'>radial_gradient</a>(&amp;self, cx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, cy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, inr: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, outr: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, icol: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>, ocol: <a class='struct' href='../nanovg/struct.Color.html' title='nanovg::Color'>Color</a>) -&gt; <a class='struct' href='../nanovg/struct.Paint.html' title='nanovg::Paint'>Paint</a></code></h4>
+<h4 id='method.image_pattern' class='method'><code>fn <a href='#method.image_pattern' class='fnname'>image_pattern</a>(&amp;self, ox: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, oy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, ex: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, ey: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, angle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, image: &amp;<a class='struct' href='../nanovg/struct.Image.html' title='nanovg::Image'>Image</a>, repeat: <a class='enum' href='../nanovg/enum.PatternRepeat.html' title='nanovg::PatternRepeat'>PatternRepeat</a>, alpha: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>) -&gt; <a class='struct' href='../nanovg/struct.Paint.html' title='nanovg::Paint'>Paint</a></code></h4>
+<h4 id='method.scissor' class='method'><code>fn <a href='#method.scissor' class='fnname'>scissor</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, w: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, h: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.reset_scissor' class='method'><code>fn <a href='#method.reset_scissor' class='fnname'>reset_scissor</a>(&amp;self)</code></h4>
+<h4 id='method.begin_path' class='method'><code>fn <a href='#method.begin_path' class='fnname'>begin_path</a>(&amp;self)</code></h4>
+<h4 id='method.move_to' class='method'><code>fn <a href='#method.move_to' class='fnname'>move_to</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.line_to' class='method'><code>fn <a href='#method.line_to' class='fnname'>line_to</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.bezier_to' class='method'><code>fn <a href='#method.bezier_to' class='fnname'>bezier_to</a>(&amp;self, c1x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, c1y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, c2x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, c2y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.quad_to' class='method'><code>fn <a href='#method.quad_to' class='fnname'>quad_to</a>(&amp;self, cx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, cy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.arc_to' class='method'><code>fn <a href='#method.arc_to' class='fnname'>arc_to</a>(&amp;self, x1: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y1: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, x2: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y2: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, radius: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.close_path' class='method'><code>fn <a href='#method.close_path' class='fnname'>close_path</a>(&amp;self)</code></h4>
+<h4 id='method.path_winding' class='method'><code>fn <a href='#method.path_winding' class='fnname'>path_winding</a>(&amp;self, dir: <a class='enum' href='../nanovg/enum.Solidity.html' title='nanovg::Solidity'>Solidity</a>)</code></h4>
+<h4 id='method.arc' class='method'><code>fn <a href='#method.arc' class='fnname'>arc</a>(&amp;self, cx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, cy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, r: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, a0: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, a1: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, dir: <a class='enum' href='../nanovg/enum.Winding.html' title='nanovg::Winding'>Winding</a>)</code></h4>
+<h4 id='method.rect' class='method'><code>fn <a href='#method.rect' class='fnname'>rect</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, w: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, h: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.rounded_rect' class='method'><code>fn <a href='#method.rounded_rect' class='fnname'>rounded_rect</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, w: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, h: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, r: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.ellipse' class='method'><code>fn <a href='#method.ellipse' class='fnname'>ellipse</a>(&amp;self, cx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, cy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, rx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, ry: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.circle' class='method'><code>fn <a href='#method.circle' class='fnname'>circle</a>(&amp;self, cx: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, cy: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, r: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.fill' class='method'><code>fn <a href='#method.fill' class='fnname'>fill</a>(&amp;self)</code></h4>
+<h4 id='method.stroke' class='method'><code>fn <a href='#method.stroke' class='fnname'>stroke</a>(&amp;self)</code></h4>
+<h4 id='method.create_font' class='method'><code>fn <a href='#method.create_font' class='fnname'>create_font</a>(&amp;self, name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, filename: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Font.html' title='nanovg::Font'>Font</a>&gt;</code></h4>
+<h4 id='method.create_font_mem' class='method'><code>fn <a href='#method.create_font_mem' class='fnname'>create_font_mem</a>(&amp;self, name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, data: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Font.html' title='nanovg::Font'>Font</a>&gt;</code></h4>
+<h4 id='method.find_font' class='method'><code>fn <a href='#method.find_font' class='fnname'>find_font</a>(&amp;self, name: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='struct' href='../nanovg/struct.Font.html' title='nanovg::Font'>Font</a>&gt;</code></h4>
+<h4 id='method.font_size' class='method'><code>fn <a href='#method.font_size' class='fnname'>font_size</a>(&amp;self, size: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.font_blur' class='method'><code>fn <a href='#method.font_blur' class='fnname'>font_blur</a>(&amp;self, blur: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.text_letter_spacing' class='method'><code>fn <a href='#method.text_letter_spacing' class='fnname'>text_letter_spacing</a>(&amp;self, spacing: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.text_line_height' class='method'><code>fn <a href='#method.text_line_height' class='fnname'>text_line_height</a>(&amp;self, line_height: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.text_align' class='method'><code>fn <a href='#method.text_align' class='fnname'>text_align</a>(&amp;self, align: <a class='struct' href='../nanovg/struct.Align.html' title='nanovg::Align'>Align</a>)</code></h4>
+<h4 id='method.font_face_id' class='method'><code>fn <a href='#method.font_face_id' class='fnname'>font_face_id</a>(&amp;self, font: &amp;<a class='struct' href='../nanovg/struct.Font.html' title='nanovg::Font'>Font</a>)</code></h4>
+<h4 id='method.font_face' class='method'><code>fn <a href='#method.font_face' class='fnname'>font_face</a>(&amp;self, font: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
+<h4 id='method.text' class='method'><code>fn <a href='#method.text' class='fnname'>text</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.text_box' class='method'><code>fn <a href='#method.text_box' class='fnname'>text_box</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, break_row_width: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
+<h4 id='method.text_bounds' class='method'><code>fn <a href='#method.text_bounds' class='fnname'>text_bounds</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, bounds: &amp;mut <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.array.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.array.html'>; 4]</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.text_advance' class='method'><code>fn <a href='#method.text_advance' class='fnname'>text_advance</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a></code></h4>
+<h4 id='method.text_box_bounds' class='method'><code>fn <a href='#method.text_box_bounds' class='fnname'>text_box_bounds</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, break_row_width: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, bounds: &amp;mut <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.array.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.array.html'>; 4]</a>)</code></h4>
+<h4 id='method.text_glyph_positions' class='method'><code>fn <a href='#method.text_glyph_positions' class='fnname'>text_glyph_positions</a>(&amp;self, x: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, y: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../nanovg/struct.GlyphPosition.html' title='nanovg::GlyphPosition'>GlyphPosition</a>&gt;</code></h4>
+<div class='docblock'><p>return a vector of position info for all glyphs in &#39;text&#39;.
+&#39;text&#39; is utf8-encoded unicode, so the number of glyphs isn&#39;t necessarily the byte-length of the text.</p>
+</div><h4 id='method.text_break_lines' class='method'><code>fn <a href='#method.text_break_lines' class='fnname'>text_break_lines</a>(&amp;self, text: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, break_row_width: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, max_rows: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.usize.html'>usize</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../nanovg/struct.TextRow.html' title='nanovg::TextRow'>TextRow</a>&gt;</code></h4>
+<h4 id='method.text_metrics' class='method'><code>fn <a href='#method.text_metrics' class='fnname'>text_metrics</a>(&amp;self, ascender: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut </a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, descender: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut </a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>, lineh: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut </a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>)</code></h4>
+<h4 id='method.debug_dump_path_cache' class='method'><code>fn <a href='#method.debug_dump_path_cache' class='fnname'>debug_dump_path_cache</a>(&amp;self)</code></h4>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../nanovg/struct.Context.html' title='nanovg::Context'>Context</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1555' class='srclink' href='../src/nanovg/lib.rs.html#452-456' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, f: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../nanovg/struct.Context.html' title='nanovg::Context'>Context</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1561' class='srclink' href='../src/nanovg/lib.rs.html#460-484' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "nanovg";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

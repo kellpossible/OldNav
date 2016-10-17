@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `WaypointQueryResult` enum in crate `oldnav_lib`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, WaypointQueryResult">
+
+    <title>oldnav_lib::navdata::database::WaypointQueryResult - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>oldnav_lib</a>::<wbr><a href='../index.html'>navdata</a>::<wbr><a href='index.html'>database</a></p><script>window.sidebarCurrent = {name: 'WaypointQueryResult', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content enum">
+<h1 class='fqn'><span class='in-band'>Enum <a href='../../index.html'>oldnav_lib</a>::<wbr><a href='../index.html'>navdata</a>::<wbr><a href='index.html'>database</a>::<wbr><a class='enum' href=''>WaypointQueryResult</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-260' class='srclink' href='../../../src/oldnav_lib/src/navdata/database.rs.html#20-29' title='goto source code'>[src]</a></span></h1>
+<pre class='rust enum'>pub enum WaypointQueryResult&lt;T&gt; {
+    Found(T),
+    TooFar(T),
+    NotFound,
+}</pre><div class='docblock'><p>The result of a query for waypoint or waypoints in <code>Database</code></p>
+</div><h2 class='variants'>Variants</h2>
+<span id='variant.Found' class='variant'><code>Found(T)</code></span><div class='docblock'><p><code>T</code> was found</p>
+</div><span id='variant.TooFar' class='variant'><code>TooFar(T)</code></span><div class='docblock'><p><code>T</code> was found but it was too far.</p>
+</div><span id='variant.NotFound' class='variant'><code>NotFound</code></span><div class='docblock'><p><code>T</code> was not found at all.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;T&gt; <a class='enum' href='../../../oldnav_lib/navdata/database/enum.WaypointQueryResult.html' title='oldnav_lib::navdata::database::WaypointQueryResult'>WaypointQueryResult</a>&lt;T&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-267' class='srclink' href='../../../src/oldnav_lib/src/navdata/database.rs.html#31-83' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.is_found' class='method'><code>fn <a href='#method.is_found' class='fnname'>is_found</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p>Returns true if the result is <code>Found</code>.</p>
+</div><h4 id='method.is_none' class='method'><code>fn <a href='#method.is_none' class='fnname'>is_none</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p>Returns true if the result is <code>None</code>.</p>
+</div><h4 id='method.is_too_far' class='method'><code>fn <a href='#method.is_too_far' class='fnname'>is_too_far</a>(self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<div class='docblock'><p>Returns true if the result is <code>TooFar</code>.</p>
+</div><h4 id='method.found' class='method'><code>fn <a href='#method.found' class='fnname'>found</a>(self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;T&gt;</code></h4>
+<div class='docblock'><p>Converts from <code>WaypointQueryResult&lt;T&gt; to</code>Option<T>`
+Returns a None if the result is not Found.</p>
+</div><h4 id='method.too_far' class='method'><code>fn <a href='#method.too_far' class='fnname'>too_far</a>(self) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;T&gt;</code></h4>
+<div class='docblock'><p>Converts from <code>WaypointQueryResult&lt;T&gt; to</code>Option<T>`.
+Returns a None if the result is not TooFar.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "oldnav_lib";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

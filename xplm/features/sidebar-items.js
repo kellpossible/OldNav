@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Feature","A feature that can be enabled or disabled"]]});

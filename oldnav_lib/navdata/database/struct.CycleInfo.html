@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `CycleInfo` struct in crate `oldnav_lib`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, CycleInfo">
+
+    <title>oldnav_lib::navdata::database::CycleInfo - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>oldnav_lib</a>::<wbr><a href='../index.html'>navdata</a>::<wbr><a href='index.html'>database</a></p><script>window.sidebarCurrent = {name: 'CycleInfo', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>oldnav_lib</a>::<wbr><a href='../index.html'>navdata</a>::<wbr><a href='index.html'>database</a>::<wbr><a class='struct' href=''>CycleInfo</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-387' class='srclink' href='../../../src/oldnav_lib/src/navdata/database.rs.html#326-337' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct CycleInfo {
+    pub airac_cycle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>,
+    pub version: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>,
+    pub valid_from: <a class='struct' href='../../../chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='../../../chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;,
+    pub valid_to: <a class='struct' href='../../../chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='../../../chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;,
+    pub message: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>,
+}</pre><div class='docblock'><p>AIRAC Cycle Info</p>
+
+<h1 id='examples' class='section-header'><a href='#examples'>Examples</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='ident'>db</span> <span class='op'>=</span> <span class='ident'>Database</span>::<span class='ident'>new</span>(<span class='ident'>PathBuf</span>::<span class='ident'>new</span>(), <span class='ident'>PathBuf</span>::<span class='ident'>new</span>());
+<span class='kw'>let</span> <span class='ident'>cycle_info</span> <span class='op'>=</span> <span class='kw-2'>&amp;</span><span class='ident'>db</span>.<span class='ident'>cycle_info</span>;
+
+<span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;airac cycle number: {}&quot;</span>, <span class='ident'>cycle_info</span>.<span class='ident'>airac_cycle</span>);</pre>
+</div><h2 class='fields'>Fields</h2><span id='structfield.airac_cycle' class='structfield'><code>airac_cycle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code>
+                           </span><span class='stab '></span><div class='docblock'><p>The cycle number</p>
+</div><span id='structfield.version' class='structfield'><code>version: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a></code>
+                           </span><span class='stab '></span><div class='docblock'><p>Version of the cycle format?</p>
+</div><span id='structfield.valid_from' class='structfield'><code>valid_from: <a class='struct' href='../../../chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='../../../chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;</code>
+                           </span><span class='stab '></span><div class='docblock'><p>The date this cycle comes into effect (and becomes valid)</p>
+</div><span id='structfield.valid_to' class='structfield'><code>valid_to: <a class='struct' href='../../../chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='../../../chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;</code>
+                           </span><span class='stab '></span><div class='docblock'><p>The date after which this cycle expires and becomes invalid</p>
+</div><span id='structfield.message' class='structfield'><code>message: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a></code>
+                           </span><span class='stab '></span><div class='docblock'><p>Message embedded with the cycle data</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../oldnav_lib/navdata/database/struct.CycleInfo.html' title='oldnav_lib::navdata::database::CycleInfo'>CycleInfo</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-393' class='srclink' href='../../../src/oldnav_lib/src/navdata/database.rs.html#339-355' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(airac_cycle: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>, version: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>, valid_from: <a class='struct' href='../../../chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='../../../chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;, valid_to: <a class='struct' href='../../../chrono/datetime/struct.DateTime.html' title='chrono::datetime::DateTime'>DateTime</a>&lt;<a class='struct' href='../../../chrono/offset/utc/struct.UTC.html' title='chrono::offset::utc::UTC'>UTC</a>&gt;, message: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>) -&gt; <a class='struct' href='../../../oldnav_lib/navdata/database/struct.CycleInfo.html' title='oldnav_lib::navdata::database::CycleInfo'>CycleInfo</a></code></h4>
+<div class='docblock'><p>Constructor for <code>CycleInfo</code></p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../../../oldnav_lib/navdata/database/struct.CycleInfo.html' title='oldnav_lib::navdata::database::CycleInfo'>CycleInfo</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-377' class='srclink' href='../../../src/oldnav_lib/src/navdata/database.rs.html#325' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "oldnav_lib";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

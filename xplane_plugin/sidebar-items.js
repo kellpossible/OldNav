@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["xplane_plugin!","Creates an X-Plane plugin"]],"struct":[["PluginInfo","Stores information about a plugin that is provided to X-Plane"]],"trait":[["Plugin","The trait that all plugins should implement"]]});

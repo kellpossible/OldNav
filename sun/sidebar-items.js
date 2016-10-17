@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["pos","Calculates the sun position for a given date and latitude/longitude. The angles are calculated as radians."]],"struct":[["Position","Holds the azimuth and altitude angles of the sun position."]]});

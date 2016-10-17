@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["MIN_USER_MESSAGE",""],["XPLANE_ID",""]],"enum":[["XPlaneMessage","Messages that X-Plane can send to a plugin"]],"struct":[["Plugin",""],["PluginInfo",""],["SendError","An error that indicates that a message could not be sent because its message number was invald"]]});

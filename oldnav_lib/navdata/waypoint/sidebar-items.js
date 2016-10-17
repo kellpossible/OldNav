@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Waypoint","An ICAO waypoint"]],"trait":[["WaypointInterface","A common interface for accessing objects which can provide waypoint information."]]});
