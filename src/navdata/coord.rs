@@ -2,7 +2,7 @@
 //!
 //! TODO: more explaination here
 
-use nalgebra::{Vector3, Dot, Vector2};
+use nalgebra::core::{Vector3, Vector2};
 use std::f64::consts::PI;
 use std::f64::*;
 use std::fmt;
@@ -282,29 +282,29 @@ impl SphericalCoordinate {
 
     /// get the r cartesian unit vector
     pub fn r_cart_uv(&self) -> Vector3<f64> {
-        return Vector3 {
-            x: self.theta.cos() * self.phi.sin(),
-            y: self.theta.sin() * self.phi.sin(),
-            z: self.phi.cos(),
-        };
+        return Vector3::new(
+            self.theta.cos() * self.phi.sin(),
+            self.theta.sin() * self.phi.sin(),
+            self.phi.cos()
+        );
     }
 
     /// get the phi cartesian unit vector
     pub fn phi_cart_uv(&self) -> Vector3<f64> {
-        return Vector3 {
-            x: self.phi.cos() * self.theta.cos(),
-            y: self.phi.cos() * self.theta.sin(),
-            z: -self.phi.sin(),
-        };
+        return Vector3::new(
+            self.phi.cos() * self.theta.cos(),
+            self.phi.cos() * self.theta.sin(),
+            -self.phi.sin()
+        );
     }
 
     /// get the theta cartesian unit vector
     pub fn theta_cart_uv(&self) -> Vector3<f64> {
-        return Vector3 {
-            x: -self.theta.sin(),
-            y: self.theta.cos(),
-            z: 0.0,
-        };
+        return Vector3::new(
+            -self.theta.sin(),
+            self.theta.cos(),
+            0.0,
+        );
     }
 
     /// arc distance between two points along the surface of the sphere.
@@ -361,10 +361,10 @@ impl geohash::Geohashable<SphericalCoordinate> for SphericalCoordinate {
         return Ok(coord);
     }
     fn integer_encode(&self, precision: u8) -> Result<u64, String> {
-        return geohash::encode(&Vector2 {
-                                   x: self.lon(),
-                                   y: self.lat(),
-                               },
+        return geohash::encode(&Vector2::new(
+                                   self.lon(),
+                                   self.lat(),
+                               ),
                                precision,
                                &geohash::LATLON_BOUNDS);
     }

@@ -140,10 +140,10 @@ impl Bounds {
 
     /// Get the midpoint of this `Bound`
     pub fn mid(&self) -> Vector2<f64> {
-        Vector2 {
-            x: (self.x_max + self.x_min) / 2.0,
-            y: (self.y_max + self.y_min) / 2.0,
-        }
+        Vector2::new(
+            (self.x_max + self.x_min) / 2.0,
+            (self.y_max + self.y_min) / 2.0
+        )
     }
 
     /// Test whether a `Vector2` position falls within this `Bound`
@@ -444,10 +444,10 @@ pub fn neighbor(geohash: u64,
     let (x_dir, y_dir) = dir;
     let midpoint = b.mid();
 
-    let mut np = Vector2 {
-        x: midpoint.x + b.x_range() * (x_dir as f64),
-        y: midpoint.y + b.y_range() * (y_dir as f64),
-    };
+    let mut np = Vector2::new(
+        midpoint.x + b.x_range() * (x_dir as f64),
+        midpoint.y + b.y_range() * (y_dir as f64)
+    );
 
     if spherical {
         np.spherical_rectify(range)

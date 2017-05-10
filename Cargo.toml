@@ -16,14 +16,14 @@ version = "*"
 features = ["gl2"]
 
 [dependencies]
-nalgebra = "0.10.1"
+nalgebra = "0.12.2"
 astro = "2.0.0"
 sun = "0.2"
-geojson = "0.4.0"
-chrono = "0.2.*"
+geojson = "0.8.0"
+chrono = "0.3.*"
 libc = "0.2.16"
-xplm = "0.1.9"
-xplm-sys = "0.1.5"
+xplm = "0.2.2"
+xplm-sys = "0.2.2"
 xplane_plugin = "0.1.1"
 linked-list = "0.0.3"
 
