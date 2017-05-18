@@ -3,7 +3,6 @@
 //! The library for old coots who like to navigate
 //!
 
-#[macro_use]
 extern crate nalgebra;
 
 extern crate chrono;

@@ -57,12 +57,15 @@ impl Rectifiable for Vector2<f64> {
     /// #[macro_use]
     /// extern crate nalgebra;
     /// # extern crate oldnav_lib;
+    /// #[macro_use]
+    /// # extern crate approx;
     /// # use oldnav_lib::navdata::geohash::*;
-    /// use nalgebra::{Vector2, ApproxEq};
+    /// use nalgebra::Vector2;
+    /// use approx::ApproxEq;
     /// # fn main() {
-    /// let mut p = Vector2{x: 185.0, y: 30.0};
+    /// let mut p = Vector2::new(185.0, 30.0);
     /// p.spherical_rectify(&LATLON_BOUNDS);
-    /// assert_approx_eq_eps!(p, Vector2{x: -175.0, y: 30.0}, 0.1);
+    /// assert_relative_eq!(p, Vector2::new(-175.0, 30.0), epsilon = 0.1);
     /// # }
     /// ```
     fn spherical_rectify(&mut self, range: &Bounds) {
@@ -159,7 +162,7 @@ impl Bounds {
     /// use nalgebra::Vector2;
     /// # fn main() {
     /// let b = Bounds::new(-21.0, 0.0, 2.0, 4.0);
-    /// let p1 = Vector2{x: -2.1, y: 2.45};
+    /// let p1 = Vector2::new(-2.1, 2.45);
     ///
     /// assert_eq!(true, b.contains(&p1));
     /// # }
@@ -174,7 +177,7 @@ impl Bounds {
     /// use nalgebra::Vector2;
     /// # fn main() {
     /// let b = Bounds::new(-21.0, 0.0, 2.0, 4.0);
-    /// let p2: Vector2<f64> = Vector2{x: -100.0, y: 2.45};
+    /// let p2: Vector2<f64> = Vector2::new(-100.0, 2.45);
     ///
     /// assert_eq!(false, b.contains(&p2));
     /// # }
@@ -218,7 +221,7 @@ pub static LATLON_BOUNDS: Bounds = Bounds {
 /// # use oldnav_lib::navdata::geohash::*;
 /// use nalgebra::Vector2;
 /// # fn main() {
-/// let p = Vector2{y: 31.23, x: 121.473};
+/// let p = Vector2::new(121.473, 31.23);
 /// let bounds = LATLON_BOUNDS.clone();
 /// let gh = encode(&p, 8, &bounds).unwrap();
 /// assert_eq!(hash_to_string(gh).unwrap(), "11100110");
@@ -342,7 +345,7 @@ pub fn hash_from_string(string: &str) -> Result<u64, String> {
 /// # use oldnav_lib::navdata::geohash::*;
 /// use nalgebra::Vector2;
 /// # fn main() {
-/// let p = Vector2{y: -38.12, x: 148.234};
+/// let p = Vector2::new(148.234, -38.12);
 /// let gh = encode(&p, 40, &LATLON_BOUNDS).unwrap();
 /// let b = decode(gh, &LATLON_BOUNDS).unwrap();
 /// assert_eq!(true, b.contains(&p));

@@ -2,6 +2,7 @@ target
 .idea
 .project
 .settings
+.vscode
 *.sublime-workspace
 Waypoints.txt
 resources/navdata
