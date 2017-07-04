@@ -1,4 +1,8 @@
 language: rust
+addons:
+  apt:
+    packages:
+      - clang-3.9
 rust:
 - stable
 - beta
