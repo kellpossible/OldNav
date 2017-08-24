@@ -11,12 +11,10 @@ use std::rc::Rc;
 ///
 /// ```
 /// # use oldnav_lib::navdata::waypoint::Waypoint;
-/// # use oldnav_lib::navdata::country::Country;
 /// # use oldnav_lib::navdata::coord::SphericalCoordinate;
 /// # use std::rc::Rc;
-/// let country = Country::new("AG", "Solomon Islands");
 /// let pos = SphericalCoordinate::from_geographic(0.0, -9.66483, 161.02166);
-/// let waypoint = Waypoint::new("ERVOS", "ERVOS", pos, Some(Rc::new(country)));
+/// let waypoint = Waypoint::new("ERVOS", "ERVOS", pos, None);
 /// ```
 pub struct Waypoint {
     /// ICAO airport code
