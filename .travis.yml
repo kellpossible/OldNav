@@ -2,7 +2,7 @@ language: rust
 addons:
   apt:
     packages:
-      - clang-3.9
+      - clang
 rust:
 - stable
 - beta
