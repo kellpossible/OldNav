@@ -8,6 +8,9 @@ extern crate nalgebra;
 extern crate chrono;
 extern crate linked_list;
 
+#[macro_use]
+extern crate combine;
+
 #[warn(missing_docs, missing_debug_implementations, missing_copy_implementations,
 trivial_casts, trivial_numeric_casts,
 unsafe_code,

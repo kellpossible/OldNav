@@ -1,7 +1,7 @@
 //! A module with methods for `Waypoint` and other associated functions and interfaces.
 
 use navdata::coord::SphericalCoordinate;
-use navdata::country::Country;
+use navdata::airport::Airport;
 use std::fmt;
 use std::rc::Rc;
 
@@ -28,8 +28,8 @@ pub struct Waypoint {
     /// Position of airport
     pub pos: SphericalCoordinate,
 
-    /// `Country` containing this `Waypoint`
-    pub country: Option<Rc<Country>>,
+    /// `Airport` terminal area containing this `Waypoint`
+    pub airport: Option<Rc<Airport>>,
 }
 
 /// A common interface for accessing objects which can provide waypoint information.
@@ -49,13 +49,13 @@ impl Waypoint {
     pub fn new<S: Into<String>>(code: S,
                                 name: S,
                                 pos: SphericalCoordinate,
-                                country: Option<Rc<Country>>)
+                                airport: Option<Rc<Airport>>)
                                 -> Waypoint {
         return Waypoint {
             code: code.into(),
             name: name.into(),
             pos: pos,
-            country: country,
+            airport: airport,
         };
     }
 }
@@ -74,11 +74,58 @@ impl WaypointInterface for Waypoint {
     }
 }
 
+impl WaypointInterface for UnlinkedWaypoint {
+    fn code(&self) -> &str {
+        return &self.code;
+    }
+
+    fn name(&self) -> &str {
+        return &self.name;
+    }
+
+    fn pos(&self) -> &SphericalCoordinate {
+        return &self.pos;
+    }
+}
+
+#[derive(Debug)]
+pub struct UnlinkedWaypoint {
+    /// ICAO airport code
+    pub code: String,
+
+    /// Name of airport
+    pub name: String,
+
+    /// Position of airport
+    pub pos: SphericalCoordinate,
+
+    /// `Airport` terminal area containing this `Waypoint`
+    pub airport: Option<String>
+}
+
+
+impl UnlinkedWaypoint {
+    /// Constructor for `Waypoint`.
+    pub fn new<S: Into<String>>(code: S,
+                                name: S,
+                                pos: SphericalCoordinate,
+                                airport: Option<String>)
+                                -> UnlinkedWaypoint {
+        return UnlinkedWaypoint {
+            code: code.into(),
+            name: name.into(),
+            pos: pos,
+            airport: airport,
+        };
+    }
+}
+
+
 impl fmt::Debug for Waypoint {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let country_str = match self.country.as_ref() {
+        let airport_str = match self.airport.as_ref() {
             None => "None",
-            Some(c) => &*c.name,
+            Some(airport) => airport.code(),
         };
         return write!(f,
                       "Waypoint {{code: {}, name: {}, pos: [{},{}], country: {}}}",
@@ -86,7 +133,7 @@ impl fmt::Debug for Waypoint {
                       self.name,
                       self.pos.lat(),
                       self.pos.lon(),
-                      country_str);
+                      airport_str);
 
     }
 }

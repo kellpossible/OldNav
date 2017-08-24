@@ -27,6 +27,7 @@ xplm-sys = "0.2.2"
 xplane_plugin = "0.1.1"
 linked-list = "0.0.3"
 approx = "0.1.1"
+combine = "3.0.0-alpha.3"
 
 [profile.dev]
 

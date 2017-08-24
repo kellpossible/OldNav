@@ -1,8 +1,7 @@
 //! The Navdata Database - Loaded from the x-plane GNS430 database.
 
-use navdata::waypoint::Waypoint;
+use navdata::waypoint::{Waypoint, UnlinkedWaypoint};
 use navdata::multihash::MultiHash;
-// use navdata::waypoint::WaypointInterface;
 use navdata::country::Country;
 use navdata::coord::SphericalCoordinate;
 use navdata::route::Route;
@@ -15,6 +14,8 @@ use std::fmt;
 use chrono::{DateTime, UTC, TimeZone};
 use chrono::format::ParseResult;
 use std::mem;
+use combine::char::{newline, spaces, Spaces, char, alpha_num, digit, space};
+use combine::{many1, Parser, sep_by, StreamError, optional, one_of, count, Stream, any, many};
 
 /// The result of a query for waypoint or waypoints in `Database`
 pub enum WaypointQueryResult<T> {
@@ -107,14 +108,81 @@ pub struct Database {
     pub cycle_info: CycleInfo,
 }
 
+parser!{
+    fn float_p[I]()(I) -> f64
+    where
+        [I: Stream<Item = char>,]
+    {
+        many1(digit().or(char('-').or(char('.'))))
+        .map(|string: String| string.parse::<f64>().unwrap())
+        .message("while parsing float")
+    }
+}
+
+
+parser!{
+    fn icao_code_p[I]()(I) -> String
+    where
+        [I: Stream<Item = char>,]
+    {
+        many1(alpha_num())
+        .map(|string: String| string)
+        .message("while parsing float")
+    }
+}
+
+parser!{
+    fn coord_p[I]()(I) -> SphericalCoordinate
+    where
+        [I: Stream<Item = char>,]
+    {
+        count(2, spaces().with(float_p()))
+            .map(|coords: Vec<f64>| {
+                SphericalCoordinate::from_geographic(0.0, coords.get(0).unwrap().clone(), coords.get(1).unwrap().clone())
+            })
+    }
+}
+
+parser!{
+    fn waypoint_p[I]()(I) -> UnlinkedWaypoint
+    where
+        [I: Stream<Item = char>,]
+    {
+        (
+            coord_p(),
+            spaces().with(icao_code_p()),
+            spaces().with(icao_code_p()),
+            many::<String, _>(char(' ').or(char('\t')).or(alpha_num()))
+        ).map(|(pos, code, apt_code, _) | {
+            if apt_code == "ENRT"
+            {
+                return UnlinkedWaypoint::new(code.clone(), code.clone(), pos, None);
+            }
+            else
+            {
+                return UnlinkedWaypoint::new(code.clone(), code.clone(), pos, Some(apt_code));
+            }
+        })
+    }
+}
+
+parser!{
+    fn waypoints_p[I]()(I) -> Vec<UnlinkedWaypoint>
+    where
+        [I: Stream<Item = char>,]
+    {
+        sep_by(waypoint_p(), newline())
+    }
+}
+
 impl Database {
     /// Constructor for `Database`
     pub fn new(navdata_dir: PathBuf, resources_dir: PathBuf) -> Database {
         let countries_path = resources_dir.join("icao_countries.txt");
         let countries_path = countries_path.to_str().unwrap();
 
-        let waypoints_path = navdata_dir.join("waypoints.txt");
-        let waypoints_path = waypoints_path.to_str().unwrap();
+        let fixes_path = navdata_dir.join("earth_fix.dat");
+        let fixes_path = fixes_path.to_str().unwrap();
 
         let cycle_info_path = navdata_dir.join("cycle_info.txt");
         let cycle_info_path = cycle_info_path.to_str().unwrap();
@@ -131,7 +199,7 @@ impl Database {
         };
 
         db.read_countries(countries_path);
-        //        db.read_fixes(waypoints_path);
+        db.read_fixes(fixes_path);
         //        db.read_airways(airways_path);
 
         return db;
@@ -144,25 +212,45 @@ impl Database {
 
         let bf = BufReader::new(&f);
 
-        for line in bf.lines() {
-            let l = line.unwrap();
-            let split: Vec<&str> = l.split(",").collect();
-            let waypoint_code = split[0].to_string();
-            let lat: f64 = split[1].to_string().parse().unwrap();
-            let lon: f64 = split[2].to_string().parse().unwrap();
-            let pos = SphericalCoordinate::from_geographic(0.0, lat, lon);
+        let sample = "33.492513889    9.217400000  07EBA ENRT DT 2118994
+ 16.000000000  -30.000000000  1630N ENRT GV 2115145
+ 17.000000000  -30.000000000  1730N ENRT GV 2115145
+ 18.000000000  -30.000000000  1830N ENRT GV 2115145
+ 19.000000000  -30.000000000  1930N ENRT GV 2115145";
 
 
-            // unwrap the option and get a counted reference to the country
-            let country = match self.countries.get(split[3]) {
-                None => None,
-                Some(v) => Some(v.clone()),
-            };
+        //Parse spaces first and use the with method to only keep the result of the next parser
+//        let float = spaces().with(many1(digit().or(char('-').or(char('.')))).map(|string: String| string.parse::<f64>().unwrap()));
 
-            let waypoint =
-                Waypoint::new(waypoint_code.clone(), waypoint_code.clone(), pos, country);
-            self.insert_fix(waypoint)
-        }
+        //Parse integers separated by commas, skipping whitespace
+//        let mut lat_lon = sep_by(many1(float_p), spaces());
+
+//        let result: Result<(Vec<f64>, &str), StreamError<&str>> = lat_lon.parse("   -5.0   5.234 5.0");
+
+        let result: Result<(Vec<UnlinkedWaypoint>, &str), StreamError<&str>> = waypoints_p().parse(sample);
+
+        println!("{:?}", result.unwrap().0);
+
+
+//        for line in bf.lines() {
+//            let l = line.unwrap();
+//            let split: Vec<&str> = l.split(",").collect();
+//            let waypoint_code = split[0].to_string();
+//            let lat: f64 = split[1].to_string().parse().unwrap();
+//            let lon: f64 = split[2].to_string().parse().unwrap();
+//            let pos = SphericalCoordinate::from_geographic(0.0, lat, lon);
+//
+//
+//            // unwrap the option and get a counted reference to the country
+//            let country = match self.countries.get(split[3]) {
+//                None => None,
+//                Some(v) => Some(v.clone()),
+//            };
+//
+//            let waypoint =
+//                Waypoint::new(waypoint_code.clone(), waypoint_code.clone(), pos, country);
+//            self.insert_fix(waypoint)
+//        }
 
     }
 

@@ -17,10 +17,9 @@ impl Airport {
     /// Constructor for `Airport`.
     pub fn new<S: Into<String>>(code: S,
                                 name: S,
-                                pos: SphericalCoordinate,
-                                country: Option<Rc<Country>>)
+                                pos: SphericalCoordinate)
                                 -> Airport {
-        return Airport { waypoint: Waypoint::new(code, name, pos, country) };
+        return Airport { waypoint: Waypoint::new(code, name, pos, None) };
     }
 }
 
