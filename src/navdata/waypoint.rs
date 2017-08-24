@@ -46,11 +46,12 @@ pub trait WaypointInterface {
 
 impl Waypoint {
     /// Constructor for `Waypoint`.
-    pub fn new<S: Into<String>>(code: S,
-                                name: S,
-                                pos: SphericalCoordinate,
-                                airport: Option<Rc<Airport>>)
-                                -> Waypoint {
+    pub fn new<S: Into<String>>(
+        code: S,
+        name: S,
+        pos: SphericalCoordinate,
+        airport: Option<Rc<Airport>>,
+    ) -> Waypoint {
         return Waypoint {
             code: code.into(),
             name: name.into(),
@@ -100,17 +101,18 @@ pub struct UnlinkedWaypoint {
     pub pos: SphericalCoordinate,
 
     /// `Airport` terminal area containing this `Waypoint`
-    pub airport: Option<String>
+    pub airport: Option<String>,
 }
 
 
 impl UnlinkedWaypoint {
     /// Constructor for `Waypoint`.
-    pub fn new<S: Into<String>>(code: S,
-                                name: S,
-                                pos: SphericalCoordinate,
-                                airport: Option<String>)
-                                -> UnlinkedWaypoint {
+    pub fn new<S: Into<String>>(
+        code: S,
+        name: S,
+        pos: SphericalCoordinate,
+        airport: Option<String>,
+    ) -> UnlinkedWaypoint {
         return UnlinkedWaypoint {
             code: code.into(),
             name: name.into(),
@@ -127,13 +129,15 @@ impl fmt::Debug for Waypoint {
             None => "None",
             Some(airport) => airport.code(),
         };
-        return write!(f,
-                      "Waypoint {{code: {}, name: {}, pos: [{},{}], country: {}}}",
-                      self.code,
-                      self.name,
-                      self.pos.lat(),
-                      self.pos.lon(),
-                      airport_str);
+        return write!(
+            f,
+            "Waypoint {{code: {}, name: {}, pos: [{},{}], country: {}}}",
+            self.code,
+            self.name,
+            self.pos.lat(),
+            self.pos.lon(),
+            airport_str
+        );
 
     }
 }

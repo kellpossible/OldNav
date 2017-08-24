@@ -151,9 +151,11 @@ impl SphericalCoordinate {
     ///
     ///
     pub fn from_geographic(alt: f64, lat: f64, lon: f64) -> SphericalCoordinate {
-        return SphericalCoordinate::new(alt + EARTH_MSL_RADIUS,
-                                        f64::to_radians(lon) + PI,
-                                        f64::to_radians(lat) + HALF_PI);
+        return SphericalCoordinate::new(
+            alt + EARTH_MSL_RADIUS,
+            f64::to_radians(lon) + PI,
+            f64::to_radians(lat) + HALF_PI,
+        );
     }
 
     /// Create a new SphericalCoordinate from cartesian coordinate.
@@ -285,7 +287,7 @@ impl SphericalCoordinate {
         return Vector3::new(
             self.theta.cos() * self.phi.sin(),
             self.theta.sin() * self.phi.sin(),
-            self.phi.cos()
+            self.phi.cos(),
         );
     }
 
@@ -294,17 +296,13 @@ impl SphericalCoordinate {
         return Vector3::new(
             self.phi.cos() * self.theta.cos(),
             self.phi.cos() * self.theta.sin(),
-            -self.phi.sin()
+            -self.phi.sin(),
         );
     }
 
     /// get the theta cartesian unit vector
     pub fn theta_cart_uv(&self) -> Vector3<f64> {
-        return Vector3::new(
-            -self.theta.sin(),
-            self.theta.cos(),
-            0.0,
-        );
+        return Vector3::new(-self.theta.sin(), self.theta.cos(), 0.0);
     }
 
     /// arc distance between two points along the surface of the sphere.
@@ -318,10 +316,12 @@ impl SphericalCoordinate {
     /// Format the `SphericalCoordinate` as a Geographical point string (altitude,
     /// latitude and longitude).
     pub fn fmt_geographic(&self) -> String {
-        format!("Point {{alt: {}, lat: {}, lon: {}}}",
-                self.alt(),
-                self.lat(),
-                self.lon())
+        format!(
+            "Point {{alt: {}, lat: {}, lon: {}}}",
+            self.alt(),
+            self.lat(),
+            self.lon()
+        )
     }
 
     /// A very simple difference in angle heuristic
@@ -334,22 +334,26 @@ impl SphericalCoordinate {
 
 impl fmt::Debug for SphericalCoordinate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f,
-               "SphericalCoordinate {{r: {}, theta: {}, phi: {}}}",
-               self.r,
-               self.theta,
-               self.phi)
+        write!(
+            f,
+            "SphericalCoordinate {{r: {}, theta: {}, phi: {}}}",
+            self.r,
+            self.theta,
+            self.phi
+        )
     }
 }
 
 
 impl fmt::Display for SphericalCoordinate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f,
-               "SphericalCoordinate {{r: {}, theta: {}, phi: {}}}",
-               self.r,
-               self.theta,
-               self.phi)
+        write!(
+            f,
+            "SphericalCoordinate {{r: {}, theta: {}, phi: {}}}",
+            self.r,
+            self.theta,
+            self.phi
+        )
     }
 }
 
@@ -361,12 +365,11 @@ impl geohash::Geohashable<SphericalCoordinate> for SphericalCoordinate {
         return Ok(coord);
     }
     fn integer_encode(&self, precision: u8) -> Result<u64, String> {
-        return geohash::encode(&Vector2::new(
-                                   self.lon(),
-                                   self.lat(),
-                               ),
-                               precision,
-                               &geohash::LATLON_BOUNDS);
+        return geohash::encode(
+            &Vector2::new(self.lon(), self.lat()),
+            precision,
+            &geohash::LATLON_BOUNDS,
+        );
     }
 }
 

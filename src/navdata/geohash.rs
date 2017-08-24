@@ -145,7 +145,7 @@ impl Bounds {
     pub fn mid(&self) -> Vector2<f64> {
         Vector2::new(
             (self.x_max + self.x_min) / 2.0,
-            (self.y_max + self.y_min) / 2.0
+            (self.y_max + self.y_min) / 2.0,
         )
     }
 
@@ -184,7 +184,8 @@ impl Bounds {
     /// ```
     pub fn contains(&self, position: &Vector2<f64>) -> bool {
         if position.x <= self.x_max && position.x >= self.x_min && position.y <= self.y_max &&
-           position.y >= self.y_min {
+            position.y >= self.y_min
+        {
             return true;
         }
         return false;
@@ -229,9 +230,11 @@ pub static LATLON_BOUNDS: Bounds = Bounds {
 /// ```
 pub fn encode(position: &Vector2<f64>, precision: u8, range: &Bounds) -> Result<u64, String> {
     if precision > PRECISION_MAX || precision < PRECISION_MIN {
-        return Err(format!("Precision must be in the range of {} to {}",
-                           PRECISION_MIN,
-                           PRECISION_MAX));
+        return Err(format!(
+            "Precision must be in the range of {} to {}",
+            PRECISION_MIN,
+            PRECISION_MAX
+        ));
     }
 
     let mut current_range: Bounds = range.clone();
@@ -316,9 +319,11 @@ pub fn hash_from_string(string: &str) -> Result<u64, String> {
     let precision = string.len();
 
     if precision > (PRECISION_MAX as usize) || precision < (PRECISION_MIN as usize) {
-        return Err(format!("String too long, its length must be in the range of {} to {}",
-                           PRECISION_MIN,
-                           PRECISION_MAX));
+        return Err(format!(
+            "String too long, its length must be in the range of {} to {}",
+            PRECISION_MIN,
+            PRECISION_MAX
+        ));
     }
 
     let mut hash: u64 = (precision as u64) - 1;
@@ -360,10 +365,12 @@ pub fn decode(geohash: u64, range: &Bounds) -> Result<Bounds, String> {
 pub fn decode_precision(geohash: u64, precision: u8, range: &Bounds) -> Result<Bounds, String> {
     let hp: u8 = hash_precision(geohash);
     if precision > hp {
-        return Err(format!("Selected precision ({}) is greater than the max precision of the \
+        return Err(format!(
+            "Selected precision ({}) is greater than the max precision of the \
                             hash: ({})",
-                           precision,
-                           hp));
+            precision,
+            hp
+        ));
     }
 
     return decode_precision_nocheck(geohash, precision, range);
@@ -371,10 +378,11 @@ pub fn decode_precision(geohash: u64, precision: u8, range: &Bounds) -> Result<B
 
 /// decode an integer geohash with specified precision, without checking
 /// whether or not the precision is less than the hash's internal precision.
-pub fn decode_precision_nocheck(geohash: u64,
-                                precision: u8,
-                                range: &Bounds)
-                                -> Result<Bounds, String> {
+pub fn decode_precision_nocheck(
+    geohash: u64,
+    precision: u8,
+    range: &Bounds,
+) -> Result<Bounds, String> {
     let mut current_range: Bounds = range.clone();
 
     let mut do_x = true;
@@ -437,11 +445,12 @@ pub fn hash_precision(geohash: u64) -> u8 {
 /// ```
 ///
 /// ```
-pub fn neighbor(geohash: u64,
-                dir: (i8, i8),
-                range: &Bounds,
-                spherical: bool)
-                -> Result<u64, String> {
+pub fn neighbor(
+    geohash: u64,
+    dir: (i8, i8),
+    range: &Bounds,
+    spherical: bool,
+) -> Result<u64, String> {
     let b: Bounds = try!(decode(geohash, range));
     let precision = hash_precision(geohash);
     let (x_dir, y_dir) = dir;
@@ -449,7 +458,7 @@ pub fn neighbor(geohash: u64,
 
     let mut np = Vector2::new(
         midpoint.x + b.x_range() * (x_dir as f64),
-        midpoint.y + b.y_range() * (y_dir as f64)
+        midpoint.y + b.y_range() * (y_dir as f64),
     );
 
     if spherical {

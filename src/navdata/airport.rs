@@ -15,10 +15,7 @@ pub struct Airport {
 
 impl Airport {
     /// Constructor for `Airport`.
-    pub fn new<S: Into<String>>(code: S,
-                                name: S,
-                                pos: SphericalCoordinate)
-                                -> Airport {
+    pub fn new<S: Into<String>>(code: S, name: S, pos: SphericalCoordinate) -> Airport {
         return Airport { waypoint: Waypoint::new(code, name, pos, None) };
     }
 }
@@ -40,12 +37,14 @@ impl WaypointInterface for Airport {
 
 impl fmt::Debug for Airport {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        return write!(f,
-                      "Airport: {{code: {}, name: {}, pos: [{}, {}]}}",
-                      self.waypoint.code,
-                      self.waypoint.name,
-                      self.pos().lat(),
-                      self.pos().lon());
+        return write!(
+            f,
+            "Airport: {{code: {}, name: {}, pos: [{}, {}]}}",
+            self.waypoint.code,
+            self.waypoint.name,
+            self.pos().lat(),
+            self.pos().lon()
+        );
 
     }
 }

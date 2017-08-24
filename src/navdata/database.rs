@@ -138,7 +138,10 @@ parser!{
     {
         count(2, spaces().with(float_p()))
             .map(|coords: Vec<f64>| {
-                SphericalCoordinate::from_geographic(0.0, coords.get(0).unwrap().clone(), coords.get(1).unwrap().clone())
+                SphericalCoordinate::from_geographic(
+                0.0,
+                coords.get(0).unwrap().clone(),
+                coords.get(1).unwrap().clone())
             })
     }
 }
@@ -219,38 +222,31 @@ impl Database {
  19.000000000  -30.000000000  1930N ENRT GV 2115145";
 
 
-        //Parse spaces first and use the with method to only keep the result of the next parser
-//        let float = spaces().with(many1(digit().or(char('-').or(char('.')))).map(|string: String| string.parse::<f64>().unwrap()));
-
-        //Parse integers separated by commas, skipping whitespace
-//        let mut lat_lon = sep_by(many1(float_p), spaces());
-
-//        let result: Result<(Vec<f64>, &str), StreamError<&str>> = lat_lon.parse("   -5.0   5.234 5.0");
-
-        let result: Result<(Vec<UnlinkedWaypoint>, &str), StreamError<&str>> = waypoints_p().parse(sample);
+        let result: Result<(Vec<UnlinkedWaypoint>, &str), StreamError<&str>> = waypoints_p()
+            .parse(sample);
 
         println!("{:?}", result.unwrap().0);
 
 
-//        for line in bf.lines() {
-//            let l = line.unwrap();
-//            let split: Vec<&str> = l.split(",").collect();
-//            let waypoint_code = split[0].to_string();
-//            let lat: f64 = split[1].to_string().parse().unwrap();
-//            let lon: f64 = split[2].to_string().parse().unwrap();
-//            let pos = SphericalCoordinate::from_geographic(0.0, lat, lon);
-//
-//
-//            // unwrap the option and get a counted reference to the country
-//            let country = match self.countries.get(split[3]) {
-//                None => None,
-//                Some(v) => Some(v.clone()),
-//            };
-//
-//            let waypoint =
-//                Waypoint::new(waypoint_code.clone(), waypoint_code.clone(), pos, country);
-//            self.insert_fix(waypoint)
-//        }
+        //        for line in bf.lines() {
+        //            let l = line.unwrap();
+        //            let split: Vec<&str> = l.split(",").collect();
+        //            let waypoint_code = split[0].to_string();
+        //            let lat: f64 = split[1].to_string().parse().unwrap();
+        //            let lon: f64 = split[2].to_string().parse().unwrap();
+        //            let pos = SphericalCoordinate::from_geographic(0.0, lat, lon);
+        //
+        //
+        //            // unwrap the option and get a counted reference to the country
+        //            let country = match self.countries.get(split[3]) {
+        //                None => None,
+        //                Some(v) => Some(v.clone()),
+        //            };
+        //
+        //            let waypoint =
+        //                Waypoint::new(waypoint_code.clone(), waypoint_code.clone(), pos, country);
+        //            self.insert_fix(waypoint)
+        //        }
 
     }
 
@@ -259,7 +255,6 @@ impl Database {
     /// Basically it just maps ICAO codes to the country names,
     /// see icao_countries.txt for an example file format.
     fn read_countries(&mut self, file_path: &str) {
-
         let f = File::open(file_path).expect(&format!("Cannot open file {}", file_path));
 
         let bf = BufReader::new(&f);
@@ -270,8 +265,10 @@ impl Database {
             let country_code = split[0].to_string();
             let country_name = split[1].to_string();
 
-            self.countries.insert(country_code.clone(),
-                                  Rc::new(Country::new(country_code, country_name)));
+            self.countries.insert(
+                country_code.clone(),
+                Rc::new(Country::new(country_code, country_name)),
+            );
         }
 
     }
@@ -350,7 +347,10 @@ impl Database {
     /// Insert a fix waypoint into this database.
     pub fn insert_fix(&mut self, waypoint: Waypoint) {
         let waypoint_ref = Rc::new(waypoint);
-        self.waypoint_hash.insert(waypoint_ref.name.clone(), waypoint_ref.clone());
+        self.waypoint_hash.insert(
+            waypoint_ref.name.clone(),
+            waypoint_ref.clone(),
+        );
         self.fixes.push(waypoint_ref);
     }
 
@@ -359,11 +359,12 @@ impl Database {
     /// Find a waypoint which most closely matches the supplied parameters.
     /// + code: the icao code for the waypoint
     /// + position and max_dist: max distance of the waypoint from the given position
-    pub fn match_waypoint_dist(&self,
-                               code: &str,
-                               position: &SphericalCoordinate,
-                               max_dist: f64)
-                               -> Option<&Rc<Waypoint>> {
+    pub fn match_waypoint_dist(
+        &self,
+        code: &str,
+        position: &SphericalCoordinate,
+        max_dist: f64,
+    ) -> Option<&Rc<Waypoint>> {
         let matching_waypoints = self.waypoint_hash.get(&String::from(code));
 
         if matching_waypoints.is_none() {
@@ -389,12 +390,14 @@ impl Database {
 
 impl fmt::Debug for Database {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        return write!(f,
-                      "Database: {{n_fixes: {}, n_airports: {}, n_countries: {}, n_airways: {}}}",
-                      self.fixes.len(),
-                      0,
-                      self.countries.len(),
-                      self.airways.len());
+        return write!(
+            f,
+            "Database: {{n_fixes: {}, n_airports: {}, n_countries: {}, n_airways: {}}}",
+            self.fixes.len(),
+            0,
+            self.countries.len(),
+            self.airways.len()
+        );
 
     }
 }
@@ -426,12 +429,13 @@ pub struct CycleInfo {
 
 impl CycleInfo {
     /// Constructor for `CycleInfo`
-    pub fn new(airac_cycle: i32,
-               version: i32,
-               valid_from: DateTime<UTC>,
-               valid_to: DateTime<UTC>,
-               message: String)
-               -> CycleInfo {
+    pub fn new(
+        airac_cycle: i32,
+        version: i32,
+        valid_from: DateTime<UTC>,
+        valid_to: DateTime<UTC>,
+        message: String,
+    ) -> CycleInfo {
         CycleInfo {
             airac_cycle: airac_cycle,
             version: version,
